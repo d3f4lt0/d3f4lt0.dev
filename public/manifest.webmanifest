@@ -1,0 +1,16 @@
+{
+  "name": "d3f4lt0.dev",
+  "short_name": "d3f4lt0",
+  "description": "Engineering portfolio of d3f4lt0",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}
