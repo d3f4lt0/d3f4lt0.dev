@@ -32,7 +32,7 @@ export default function NowPage() {
             A snapshot of current work, learning, and focus. Updated manually.
           </p>
           <p className="mt-2 text-xs text-muted-foreground/60">
-            Last updated: 2026-07-27
+            Last updated: 2026-08-03
           </p>
         </div>
       </Section>
