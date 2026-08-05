@@ -164,6 +164,10 @@ export default function HomePage() {
         </div>
       </Section>
 
+      <p className="py-8 text-center text-sm font-semibold text-muted-foreground/60">
+        Looking for trade calls? Keep looking.
+      </p>
+
       <Section className="py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">
           <SectionHeader
