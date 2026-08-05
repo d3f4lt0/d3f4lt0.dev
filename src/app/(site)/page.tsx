@@ -125,10 +125,10 @@ export default function HomePage() {
           <PageTitle>d3f4lt0</PageTitle>
           <div className="mt-1 h-px w-12 bg-border/60" aria-hidden="true" />
           <p className="mt-8 text-lg leading-7 text-foreground/80 text-balance">
-            Building systems that survive reality.
+            I like building things that outlive my motivation.
           </p>
           <p className="mt-4 text-sm leading-6 text-muted-foreground/75">
-            I like building things that outlive my motivation.
+            One must imagine d3f4lt happy pushing code into the void.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-6">
             <Link
