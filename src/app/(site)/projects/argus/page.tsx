@@ -23,6 +23,23 @@ export const metadata: Metadata = {
   },
 };
 
+const rooms = [
+  { name: 'Identity', description: 'Profiles, credentials, and access—one place for who you are online.' },
+  { name: 'Mind', description: 'Notes, reading, and knowledge—things you learn and want to keep.' },
+  { name: 'Money', description: 'Portfolios, transactions, and financial clarity without spreadsheets.' },
+  { name: 'Files', description: 'Documents, media, and artifacts—organized, searchable, yours.' },
+  { name: 'Time', description: 'Calendar, scheduling, and rhythms—life has a schedule.' },
+  { name: 'Projects', description: 'Tasks, milestones, and execution—work that moves forward.' },
+  { name: 'AI', description: 'Intelligence and automation—assistants that respect your context.' },
+];
+
+const principles = [
+  'Privacy by default. Data stays local unless you choose otherwise.',
+  'Local-first. No cloud dependency. No forced subscriptions.',
+  'Ownership. You control the format, the storage, and the future.',
+  'Long-term. Built to outlive platforms, frameworks, and trends.',
+];
+
 export default function ArgusProjectPage() {
   return (
     <div className="page-fade-in">
@@ -45,40 +62,42 @@ export default function ArgusProjectPage() {
 
       <Section className="py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">
-          <SectionHeader number="01" title="Mission" />
-          <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
-            <p>
-              Replace the fragmented experience of using separate apps for identity, knowledge, files, finance, projects, time, and personal organization with one calm, local-first home.
-            </p>
-          </div>
-        </div>
-      </Section>
-
-      <Section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-2xl">
-          <SectionHeader number="02" title="Vision" />
-          <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
-            <p>
-              A single environment that respects privacy, ownership, and long-term thinking. Every piece of your digital life in one place, under your control.
-            </p>
-          </div>
-        </div>
-      </Section>
-
-      <Section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-2xl">
-          <SectionHeader number="03" title="Why it exists" />
+          <SectionHeader number="01" title="Why ARGUS?" />
           <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
             <p>
               Modern tools fragment attention. Identity lives in one app, notes in another, finances in a spreadsheet, projects in a tracker. ARGUS exists to end that fragmentation without sacrificing depth or control.
             </p>
+            <p>
+              It is not another productivity suite. It is a single environment for the pieces of a digital life—calm by default, local-first, and built to last.
+            </p>
           </div>
         </div>
       </Section>
 
       <Section className="py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">
-          <SectionHeader number="04" title="Current development status" />
+          <SectionHeader number="02" title="What ARGUS will become" />
+          <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
+            <p>
+              Seven core rooms, each addressing a different part of life. Together, they form a coherent whole.
+            </p>
+          </div>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2">
+            {rooms.map((room) => (
+              <Card key={room.name} className="border-border/60 bg-card/50">
+                <CardContent className="p-5">
+                  <h3 className="text-sm font-medium text-foreground/80">{room.name}</h3>
+                  <p className="mt-1.5 text-sm text-muted-foreground/75 leading-relaxed">{room.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      <Section className="py-16 sm:py-24">
+        <div className="mx-auto max-w-2xl">
+          <SectionHeader number="03" title="Development status" />
           <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
             <p>
               Active engineering development. The core architecture is in progress. No public release date. No public repository.
@@ -89,21 +108,10 @@ export default function ArgusProjectPage() {
 
       <Section className="py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">
-          <SectionHeader number="05" title="High-level roadmap" />
-          <div className="mt-6 grid gap-3">
-            {[
-              'Identity and access layer',
-              'Knowledge and notes system',
-              'File and media management',
-              'Finance and portfolio tracking',
-              'Project and task orchestration',
-              'Time and calendar integration',
-              'Intelligence and automation layer',
-            ].map((item) => (
-              <div key={item} className="flex items-center gap-3">
-                <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30" aria-hidden="true" />
-                <span className="text-sm text-muted-foreground">{item}</span>
-              </div>
+          <SectionHeader number="04" title="Principles" />
+          <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
+            {principles.map((principle) => (
+              <p key={principle}>{principle}</p>
             ))}
           </div>
         </div>
@@ -111,16 +119,16 @@ export default function ArgusProjectPage() {
 
       <Section className="py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">
-          <SectionHeader number="06" title="Philosophy" />
+          <SectionHeader number="05" title="Interested in the project?" />
           <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
             <p>
-              <span className="font-semibold text-foreground/80">Privacy-first.</span> Data stays local by default. Remote sync is optional and encrypted.
+              ARGUS is a solo engineering effort. I am not hiring, and this is not a job posting.
             </p>
             <p>
-              <span className="font-semibold text-foreground/80">Local-first.</span> The system works without cloud services. Ownership is non-negotiable.
+              If you are an engineer, designer, or researcher who cares about personal software, local-first architecture, or calm technology, I would value a thoughtful conversation.
             </p>
             <p>
-              <span className="font-semibold text-foreground/80">Long-term vision.</span> Built to outlive trends, frameworks, and platforms.
+              Reach out at <a href="mailto:d3f4lt0@proton.me" className="link-underline text-primary">d3f4lt0@proton.me</a>.
             </p>
           </div>
         </div>
