@@ -40,7 +40,7 @@ const journalEntries: JournalEntry[] = [
   {
     date: '2026-07-27',
     title: 'Private Beta Preparation',
-    summary: 'MEX ARGUS is being prepared for a small private beta. Focus is on stability, logging, and access control.',
+    summary: 'ARGUS is being prepared for a small private beta. Focus is on stability, logging, and access control.',
     lessonsLearned: 'Private beta means real users. Logging and error reporting need to be production-grade before inviting anyone.',
     status: 'active',
   },

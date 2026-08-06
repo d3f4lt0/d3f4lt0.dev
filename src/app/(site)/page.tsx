@@ -101,9 +101,26 @@ const projects: Project[] = [
     repository: 'github.com/d3f4lt0/phantom-fetch',
     documentation: null,
   },
+  {
+    name: 'ARGUS',
+    description: 'A private personal operating system designed to unify identity, knowledge, money, files, time, and intelligence into one calm, local-first home.',
+    href: '/projects/argus',
+    status: 'building',
+    state: 'Private project currently in active engineering development.',
+    version: 'Private',
+    stack: [],
+    lastUpdated: '2026-08-06',
+    repository: null,
+    documentation: null,
+  },
 ];
 
 const journalEntries = [
+  {
+    date: '2026-07-27',
+    title: 'Private Beta Preparation',
+    summary: 'ARGUS is being prepared for a small private beta. Focus is on stability, logging, and access control.',
+  },
   {
     date: '2026-07-21',
     title: 'ARGUS v1.5.2 Released',
@@ -115,12 +132,6 @@ const journalEntries = [
     title: 'Design System Migration',
     summary: 'Migrated web frontend to shadcn/ui with full dark mode support and accessibility improvements.',
     href: '/journal/2026-07-20-design-system',
-  },
-  {
-    date: '2026-07-19',
-    title: 'API Integration Update',
-    summary: 'MEX API integration switched to api.mex.live. HMAC SHA256 auth operational.',
-    href: '/journal/2026-07-19-api-update',
   },
 ];
 

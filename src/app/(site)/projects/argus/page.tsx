@@ -10,19 +10,19 @@ import { GitHubMetadataCard } from '@/components/site/github-metadata';
 import { GitHubMetadata } from '@/lib/github';
 
 export const metadata: Metadata = {
-  title: 'MEX ARGUS',
-  description: 'Internal trading intelligence platform. Not publicly accessible.',
+  title: 'ARGUS',
+  description: 'A private personal operating system designed to unify identity, knowledge, money, files, time, and intelligence into one calm, local-first home.',
   openGraph: {
-    title: 'MEX ARGUS — d3f4lt0',
-    description: 'Internal trading intelligence platform. Not publicly accessible.',
-    url: 'https://d3f4lt0.dev/projects/mex-argus',
+    title: 'ARGUS — d3f4lt0',
+    description: 'A private personal operating system designed to unify identity, knowledge, money, files, time, and intelligence into one calm, local-first home.',
+    url: 'https://d3f4lt0.dev/projects/argus',
     siteName: 'd3f4lt0',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MEX ARGUS — d3f4lt0',
-    description: 'Internal trading intelligence platform. Not publicly accessible.',
+    title: 'ARGUS — d3f4lt0',
+    description: 'A private personal operating system designed to unify identity, knowledge, money, files, time, and intelligence into one calm, local-first home.',
   },
 };
 
@@ -37,12 +37,26 @@ const techStack = {
 };
 
 const progressItems = [
-  { label: 'Planning', status: 'active' },
-  { label: 'Documentation', status: 'active' },
-  { label: 'Frontend', status: 'active' },
-  { label: 'Backend', status: 'active' },
-  { label: 'Trading Engine', status: 'active' },
-  { label: 'Testing', status: 'active' },
+  { label: 'Planning', status: 'completed' },
+  { label: 'Documentation', status: 'completed' },
+  { label: 'Frontend', status: 'building' },
+  { label: 'Backend', status: 'building' },
+  { label: 'Trading Engine', status: 'building' },
+  { label: 'Testing', status: 'pending' },
+];
+
+const futureIdeas = [
+  'Authentication',
+  'Live market data',
+  'Strategy engine',
+  'Deployment',
+];
+
+const notes = [
+  'Built for the MEX exchange.',
+  'Modular architecture: collector, indicators, decision, execution.',
+  'Every component is testable in isolation.',
+  'Every output is logged and reviewable.',
 ];
 
 const timeline = [
@@ -50,7 +64,7 @@ const timeline = [
   { label: 'First Prototype', date: '2026-06-22', description: 'Basic portfolio tracking and candlestick collection.', status: 'completed' },
   { label: 'Architecture Rewrite', date: '2026-07-01', description: 'Reorganized into engines: collector, indicators, decision, execution.', status: 'completed' },
   { label: 'Public Release', date: '2026-07-18', description: 'v1.0.0 shipped. Core pipeline operational.', status: 'completed' },
-  { label: 'Current Status', date: '2026-07-27', description: 'Active private development. Not publicly accessible.', status: 'active' },
+  { label: 'Current Status', date: '2026-07-27', description: 'Active engineering development. Not yet ready for public release.', status: 'building' },
   { label: 'Future Milestones', date: '', description: 'Authentication, live market data, strategy engine, deployment.', status: 'pending' },
 ];
 
@@ -65,27 +79,27 @@ const githubMetadata: GitHubMetadata = {
   description: 'Internal trading intelligence platform. Not publicly accessible.',
 };
 
-export default function MexArgusProjectPage() {
+export default function ArgusProjectPage() {
   return (
     <div className="page-fade-in">
       <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
         <div className="mx-auto max-w-2xl">
           <div className="flex items-center gap-3 mb-6">
-            <StatusBadge status="warning" label="Private Development" />
+            <StatusBadge status="building" label="Building" />
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <span className="text-xs font-mono text-muted-foreground/40 tracking-wider">
-              Preview: Internal Only
+              Private
             </span>
           </div>
-          <h1 className="text-4xl font-medium tracking-tight text-foreground sm:text-5xl">MEX ARGUS</h1>
+          <h1 className="text-4xl font-medium tracking-tight text-foreground sm:text-5xl">ARGUS</h1>
           <div className="mt-1 h-px w-12 bg-border/60" aria-hidden="true" />
           <p className="mt-6 text-lg leading-7 text-foreground/80 text-balance">
-            Internal trading intelligence platform. Not publicly accessible.
+            A private personal operating system designed to unify identity, knowledge, money, files, time, and intelligence into one calm, local-first home.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <span>Repository: Private</span>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
-            <span>Documentation: Internal Documentation</span>
+            <span>Documentation: Internal</span>
           </div>
         </div>
       </Section>
@@ -95,13 +109,13 @@ export default function MexArgusProjectPage() {
           <SectionHeader number="01" title="Overview" />
           <div className="mt-6 space-y-5 text-base leading-7 text-muted-foreground">
             <p>
-              MEX ARGUS is a professional-grade market analysis and trading assistant built for the MEX exchange. It transforms raw exchange data into actionable intelligence through technical analysis, multi-timeframe confirmation, and portfolio-aware decision making.
+              ARGUS is a private personal operating system designed to unify identity, knowledge, files, finance, projects, time, and personal organization into one calm, local-first home.
             </p>
             <p>
-              The project was built to fill a gap: existing MEX clients did not expose the data needed for systematic analysis. ARGUS is production-oriented—it runs unattended, handles failures, and explains every decision.
+              It was originally built as a professional-grade market analysis and trading assistant for the MEX exchange. The project has since evolved into something broader: a unified environment for managing the pieces of a digital life.
             </p>
             <p>
-              The main objectives are modularity, explainability, and long-term maintainability. Every component is testable in isolation. Every output is logged and reviewable.
+              The main objectives remain modularity, explainability, and long-term maintainability. Every component is testable in isolation. Every output is logged and reviewable.
             </p>
           </div>
         </div>
