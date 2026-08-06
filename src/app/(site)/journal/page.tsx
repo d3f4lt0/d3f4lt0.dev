@@ -38,6 +38,13 @@ interface JournalEntry {
 
 const journalEntries: JournalEntry[] = [
   {
+    date: '2026-08-06',
+    title: 'Portfolio Identity Pass',
+    summary: 'Completed a full identity correction for ARGUS. Removed the old MEX ARGUS project identity, restored ARGUS as the single current product, rewrote the public product page, and added ARGUS to the homepage and projects listing.',
+    lessonsLearned: 'Product identity is not just naming. It affects every link, every route, every page, and every piece of metadata. A single inconsistency breaks trust.',
+    status: 'completed',
+  },
+  {
     date: '2026-07-27',
     title: 'Private Beta Preparation',
     summary: 'ARGUS is being prepared for a small private beta. Focus is on stability, logging, and access control.',
