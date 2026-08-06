@@ -56,7 +56,7 @@ const timeline = [
   { label: 'First Prototype', date: '2026-07-06', description: 'Basic Playwright wrapper with custom user agent and viewport.', status: 'completed' },
   { label: 'Architecture Rewrite', date: '2026-07-14', description: 'Added cookie persistence, stealth plugins, and structured JSON output.', status: 'completed' },
   { label: 'Public Release', date: '2026-07-05', description: 'Repository made public with CLI interface and examples.', status: 'completed' },
-  { label: 'Current Status', date: '2026-07-27', description: 'Active. Core fetcher and stealth mode are working reliably.', status: 'active' },
+  { label: 'Current Status', date: '2026-07-27', description: 'Stealth fetcher complete, awaiting future maintenance.', status: 'completed' },
   { label: 'Future Milestones', date: '', description: 'Proxy rotation, structured extraction, backoff policies.', status: 'pending' },
 ];
 
@@ -82,7 +82,9 @@ export default function PhantomFetchPage() {
             Headless content fetcher with stealth mode, cookie handling, and structured output.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <span>Status: Active</span>
+            <span>Status: Dormant</span>
+            <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
+            <span>stealth fetcher complete, awaiting future maintenance</span>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <span>Repository: github.com/d3f4lt0/phantom-fetch</span>
           </div>

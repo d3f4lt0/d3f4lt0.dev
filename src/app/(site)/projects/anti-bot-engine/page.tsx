@@ -56,7 +56,7 @@ const timeline = [
   { label: 'First Prototype', date: '2026-07-12', description: 'Basic signal collection and scoring logic implemented.', status: 'completed' },
   { label: 'Architecture Rewrite', date: '2026-07-18', description: 'Replaced synchronous checks with an async challenge pipeline.', status: 'completed' },
   { label: 'Public Release', date: '2026-07-15', description: 'Repository made public with core fingerprinting module.', status: 'completed' },
-  { label: 'Current Status', date: '2026-07-27', description: 'Active. Fingerprinting and challenge system are functional.', status: 'active' },
+  { label: 'Current Status', date: '2026-07-27', description: 'Signals layer frozen, future direction under evaluation.', status: 'completed' },
   { label: 'Future Milestones', date: '', description: 'ML scoring model, edge middleware integration, dashboard.', status: 'pending' },
 ];
 
@@ -82,7 +82,9 @@ export default function AntiBotEnginePage() {
             Signal-based bot detection layer using behavioral fingerprinting and adaptive challenges.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <span>Status: Active</span>
+            <span>Status: Dormant</span>
+            <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
+            <span>signals layer frozen, future direction under evaluation</span>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <span>Repository: github.com/d3f4lt0/anti-bot-engine</span>
           </div>

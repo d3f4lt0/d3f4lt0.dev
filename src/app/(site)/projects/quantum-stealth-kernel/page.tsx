@@ -56,7 +56,7 @@ const timeline = [
   { label: 'First Prototype', date: '2026-07-02', description: 'Basic process hiding via syscall table modification.', status: 'completed' },
   { label: 'Architecture Rewrite', date: '2026-07-10', description: 'Moved to filesystem hooking for artifact obfuscation.', status: 'completed' },
   { label: 'Public Release', date: '2026-07-18', description: 'Repository made public with research notes and safety warnings.', status: 'completed' },
-  { label: 'Current Status', date: '2026-07-27', description: 'Active research. Proof of concept complete, documentation in progress.', status: 'active' },
+  { label: 'Current Status', date: '2026-07-27', description: 'Experimental research project.', status: 'completed' },
   { label: 'Future Milestones', date: '', description: 'Socket hiding, kernel compatibility layer, formal verification.', status: 'pending' },
 ];
 
@@ -82,7 +82,9 @@ export default function QuantumStealthKernelPage() {
             Experimental kernel module exploring process cloaking and filesystem obfuscation techniques.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <span>Status: Active</span>
+            <span>Status: Dormant</span>
+            <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
+            <span>experimental research project</span>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <span>Repository: github.com/d3f4lt0/quantum-stealth-kernel</span>
           </div>

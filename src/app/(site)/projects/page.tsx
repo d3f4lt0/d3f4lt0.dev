@@ -8,6 +8,7 @@ import { StatusBadge } from '@/components/ui/badge';
 import { VersionBadge } from '@/components/ui/version-badge';
 import { Tag } from '@/components/ui/tag';
 import { PageTitle } from '@/components/site/page-title';
+import type { Project } from '@/lib/types';
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -26,12 +27,13 @@ export const metadata: Metadata = {
   },
 };
 
-const projects = [
+const projects: Project[] = [
   {
     name: 'tls-proxy',
     description: 'Lightweight TLS termination proxy with configurable cipher suites and mutual TLS support.',
     href: '/projects/tls-proxy',
-    status: 'active',
+    status: 'dormant',
+    state: 'v1 stable, awaiting mTLS work',
     version: 'Active',
     stack: ['Go', 'TLS', 'Proxy'],
     lastUpdated: '2026-07-25',
@@ -42,7 +44,8 @@ const projects = [
     name: 'http2-inspector',
     description: 'Low-level HTTP/2 frame inspector and analysis tool for debugging protocol-level behavior.',
     href: '/projects/http2-inspector',
-    status: 'active',
+    status: 'dormant',
+    state: 'CLI working, no GUI planned',
     version: 'Active',
     stack: ['Rust', 'HTTP/2', 'CLI'],
     lastUpdated: '2026-07-22',
@@ -53,7 +56,8 @@ const projects = [
     name: 'quantum-stealth-kernel',
     description: 'Experimental kernel module exploring process cloaking and filesystem obfuscation techniques.',
     href: '/projects/quantum-stealth-kernel',
-    status: 'active',
+    status: 'dormant',
+    state: 'experimental research project',
     version: 'Active',
     stack: ['C', 'Linux Kernel', 'Security'],
     lastUpdated: '2026-07-18',
@@ -64,7 +68,8 @@ const projects = [
     name: 'anti-bot-engine',
     description: 'Signal-based bot detection layer using behavioral fingerprinting and adaptive challenges.',
     href: '/projects/anti-bot-engine',
-    status: 'active',
+    status: 'dormant',
+    state: 'signals layer frozen, future direction under evaluation',
     version: 'Active',
     stack: ['TypeScript', 'Node.js', 'Security'],
     lastUpdated: '2026-07-15',
@@ -75,7 +80,8 @@ const projects = [
     name: 'fingerprint-audit',
     description: 'Browser fingerprint collection and comparison tool for privacy and security research.',
     href: '/projects/fingerprint-audit',
-    status: 'active',
+    status: 'dormant',
+    state: 'stable collection tool, analysis layer postponed',
     version: 'Active',
     stack: ['Python', 'Selenium', 'Privacy'],
     lastUpdated: '2026-07-10',
@@ -86,23 +92,13 @@ const projects = [
     name: 'phantom-fetch',
     description: 'Headless content fetcher with stealth mode, cookie handling, and structured output.',
     href: '/projects/phantom-fetch',
-    status: 'active',
+    status: 'dormant',
+    state: 'stealth fetcher complete, awaiting future maintenance',
     version: 'Active',
     stack: ['Python', 'Playwright', 'CLI'],
     lastUpdated: '2026-07-05',
     repository: 'github.com/d3f4lt0/phantom-fetch',
     documentation: null,
-  },
-  {
-    name: 'MEX ARGUS',
-    description: 'Internal trading intelligence platform. Not listed publicly.',
-    href: '/projects/mex-argus',
-    status: 'active',
-    version: 'Active',
-    stack: ['Next.js', 'FastAPI', 'TypeScript', 'Python'],
-    lastUpdated: '2026-07-21',
-    repository: 'Private',
-    documentation: 'Internal Documentation',
   },
 ];
 
@@ -142,7 +138,8 @@ export default function ProjectsPage() {
                     <CardDescription className="leading-6">{project.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex flex-wrap items-center gap-4">
+                    <p className="text-sm text-muted-foreground/80">{project.state}</p>
+                    <div className="mt-3 flex flex-wrap items-center gap-4">
                       <div className="flex flex-wrap gap-2">
                         {project.stack.map((item) => (
                           <Tag key={item}>{item}</Tag>

@@ -56,7 +56,7 @@ const timeline = [
   { label: 'First Prototype', date: '2026-07-03', description: 'Basic fingerprint collection using Selenium WebDriver.', status: 'completed' },
   { label: 'Architecture Rewrite', date: '2026-07-12', description: 'Switched to structured output and comparison engine.', status: 'completed' },
   { label: 'Public Release', date: '2026-07-10', description: 'Repository made public with core collection module.', status: 'completed' },
-  { label: 'Current Status', date: '2026-07-27', description: 'Active. Collection and comparison engine are functional.', status: 'active' },
+  { label: 'Current Status', date: '2026-07-27', description: 'Stable collection tool, analysis layer postponed.', status: 'completed' },
   { label: 'Future Milestones', date: '', description: 'HTML reports, WebGL fingerprinting, cross-browser stability analysis.', status: 'pending' },
 ];
 
@@ -82,7 +82,9 @@ export default function FingerprintAuditPage() {
             Browser fingerprint collection and comparison tool for privacy and security research.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <span>Status: Active</span>
+            <span>Status: Dormant</span>
+            <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
+            <span>stable collection tool, analysis layer postponed</span>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <span>Repository: github.com/d3f4lt0/fingerprint-audit</span>
           </div>

@@ -56,7 +56,7 @@ const timeline = [
   { label: 'First Prototype', date: '2026-07-08', description: 'Basic frame parser capable of reading raw binary HTTP/2 traffic.', status: 'completed' },
   { label: 'Architecture Rewrite', date: '2026-07-15', description: 'Switched to a streaming parser to handle large captures without loading everything into memory.', status: 'completed' },
   { label: 'Public Release', date: '2026-07-22', description: 'Repository made public with documentation and installation instructions.', status: 'completed' },
-  { label: 'Current Status', date: '2026-07-27', description: 'Active. Core frame parsing and header inspection are working.', status: 'active' },
+  { label: 'Current Status', date: '2026-07-27', description: 'CLI working, no GUI planned.', status: 'completed' },
   { label: 'Future Milestones', date: '', description: 'Live capture support, Wireshark export, plugin system.', status: 'pending' },
 ];
 
@@ -82,7 +82,9 @@ export default function Http2InspectorPage() {
             Low-level HTTP/2 frame inspector and analysis tool for debugging protocol-level behavior.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <span>Status: Active</span>
+            <span>Status: Dormant</span>
+            <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
+            <span>CLI working, no GUI planned</span>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <span>Repository: github.com/d3f4lt0/http2-inspector</span>
           </div>

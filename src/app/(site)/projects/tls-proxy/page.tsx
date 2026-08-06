@@ -56,7 +56,7 @@ const timeline = [
   { label: 'First Prototype', date: '2026-06-28', description: 'Basic TLS termination with default cipher suites.', status: 'completed' },
   { label: 'Architecture Rewrite', date: '2026-07-05', description: 'Refactored for explicit cipher suite control and mTLS support.', status: 'completed' },
   { label: 'Public Release', date: '2026-07-25', description: 'Repository made public with documentation and examples.', status: 'completed' },
-  { label: 'Current Status', date: '2026-07-27', description: 'Active development. Core complete, testing in progress.', status: 'active' },
+  { label: 'Current Status', date: '2026-07-27', description: 'v1 stable, awaiting mTLS work.', status: 'completed' },
   { label: 'Future Milestones', date: '', description: 'HTTP/3 support, dynamic reloading, metrics hooks.', status: 'pending' },
 ];
 
@@ -82,7 +82,9 @@ export default function TlsProxyPage() {
             Lightweight TLS termination proxy with configurable cipher suites and mutual TLS support.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <span>Status: Active</span>
+            <span>Status: Dormant</span>
+            <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
+            <span>v1 stable, awaiting mTLS work</span>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <span>Repository: github.com/d3f4lt0/tls-proxy</span>
           </div>
