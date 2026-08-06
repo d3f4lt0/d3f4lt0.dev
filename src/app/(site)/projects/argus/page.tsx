@@ -26,11 +26,11 @@ export const metadata: Metadata = {
 const rooms = [
   { name: 'Identity', description: 'Profiles, credentials, and access—one place for who you are online.' },
   { name: 'Mind', description: 'Notes, reading, and knowledge—things you learn and want to keep.' },
-  { name: 'Money', description: 'Portfolios, transactions, and financial clarity without spreadsheets.' },
-  { name: 'Files', description: 'Documents, media, and artifacts—organized, searchable, yours.' },
-  { name: 'Time', description: 'Calendar, scheduling, and rhythms—life has a schedule.' },
-  { name: 'Projects', description: 'Tasks, milestones, and execution—work that moves forward.' },
-  { name: 'AI', description: 'Intelligence and automation—assistants that respect your context.' },
+  { name: 'Money', description: 'Understand your money—not just track it.' },
+  { name: 'Files', description: 'Everything worth keeping, always within reach.' },
+  { name: 'Time', description: 'Plan your time with clarity, not complexity.' },
+  { name: 'Projects', description: 'Turn ideas into finished work, one step at a time.' },
+  { name: 'AI', description: 'Helpful when you ask. Invisible when you don\'t.' },
 ];
 
 const principles = [
@@ -103,7 +103,10 @@ export default function ArgusProjectPage() {
           <SectionHeader number="03" title="Development status" />
           <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
             <p>
-              Active engineering development. The core architecture is in progress. No public release date. No public repository.
+              ARGUS is currently being built one room at a time. The foundations are in place, and the focus is on creating something reliable before adding more features.
+            </p>
+            <p>
+              There is no public release date, and the source code remains private.
             </p>
           </div>
         </div>
@@ -125,13 +128,19 @@ export default function ArgusProjectPage() {
           <SectionHeader number="05" title="Interested in the project?" />
           <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
             <p>
-              ARGUS is a solo engineering effort. I am not hiring, and this is not a job posting.
+              ARGUS is a long-term personal project.
             </p>
             <p>
-              If you are an engineer, designer, or researcher who cares about personal software, local-first architecture, or calm technology, I would value a thoughtful conversation.
+              I&apos;m not building a startup, and I&apos;m not looking to grow a team overnight.
             </p>
             <p>
-              Reach out at <a href="mailto:d3f4lt0@proton.me" className="link-underline text-primary">d3f4lt0@proton.me</a>.
+              If you&apos;re an engineer, designer, or researcher who enjoys thoughtful software, privacy, local-first systems, or building products with long-term vision, I&apos;d genuinely enjoy exchanging ideas.
+            </p>
+            <p>
+              Whether it&apos;s architecture, UX, security, or simply discussing better software, feel free to reach out.
+            </p>
+            <p>
+              d3f4lt0@proton.me
             </p>
           </div>
         </div>
