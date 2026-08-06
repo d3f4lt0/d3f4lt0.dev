@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, Github, Moon, Sun, Menu } from 'lucide-react';
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { Github, Moon, Sun, Menu } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils/cn';
 import { Button } from '@/components/ui/button';
@@ -20,26 +20,12 @@ export function Header() {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
 
-  const handleOpenSearch = useCallback(() => {
-    setSearchOpen(true);
-  }, []);
-
-  const handleCloseSearch = useCallback(() => {
-    setSearchOpen(false);
-  }, []);
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
-        event.preventDefault();
-        setSearchOpen((prev) => !prev);
-      }
       if (event.key === 'Escape') {
-        setSearchOpen(false);
         setMobileMenuOpen(false);
       }
     };
@@ -117,16 +103,6 @@ export function Header() {
           >
             <Github className="h-4 w-4" />
           </a>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={handleOpenSearch}
-            aria-label="Open search"
-          >
-            <Search className="h-4 w-4" />
-            <span className="sr-only">Search</span>
-          </Button>
           <Button
             ref={menuToggleRef}
             variant="ghost"
