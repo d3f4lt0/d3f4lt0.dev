@@ -103,7 +103,7 @@ const projects: Project[] = [
   },
   {
     name: 'ARGUS',
-    description: 'A private personal operating system designed to unify identity, knowledge, files, finance, projects, time, and intelligence into one calm, local-first home.',
+     description: 'One home for your digital life.\nIdentity, knowledge, files, money, projects, time, and AI—unified in one local-first system.',
     href: '/projects/argus',
     status: 'building',
     state: 'Private project currently in active engineering development.',

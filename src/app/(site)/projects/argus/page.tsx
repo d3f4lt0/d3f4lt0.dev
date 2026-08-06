@@ -8,10 +8,10 @@ import { StatusBadge } from '@/components/ui/badge';
 
 export const metadata: Metadata = {
   title: 'ARGUS',
-  description: 'A private personal operating system designed to unify identity, knowledge, files, finance, projects, time, and intelligence into one calm, local-first home.',
+  description: 'One home for your digital life.\nIdentity, knowledge, files, money, projects, time, and AI—unified in one local-first system.',
   openGraph: {
     title: 'ARGUS — d3f4lt0',
-    description: 'A private personal operating system designed to unify identity, knowledge, files, finance, projects, time, and intelligence into one calm, local-first home.',
+    description: 'One home for your digital life.\nIdentity, knowledge, files, money, projects, time, and AI—unified in one local-first system.',
     url: 'https://d3f4lt0.dev/projects/argus',
     siteName: 'd3f4lt0',
     type: 'website',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'ARGUS — d3f4lt0',
-    description: 'A private personal operating system designed to unify identity, knowledge, files, finance, projects, time, and intelligence into one calm, local-first home.',
+    description: 'One home for your digital life.\nIdentity, knowledge, files, money, projects, time, and AI—unified in one local-first system.',
   },
 };
 
@@ -55,7 +55,10 @@ export default function ArgusProjectPage() {
           <h1 className="text-4xl font-medium tracking-tight text-foreground sm:text-5xl">ARGUS</h1>
           <div className="mt-1 h-px w-12 bg-border/60" aria-hidden="true" />
           <p className="mt-6 text-lg leading-7 text-foreground/80 text-balance">
-            A private personal operating system designed to unify identity, knowledge, files, finance, projects, time, and intelligence into one calm, local-first home.
+            One home for your digital life.
+          </p>
+          <p className="mt-2 text-lg leading-7 text-foreground/80 text-balance">
+            Identity, knowledge, files, money, projects, time, and AI—unified in one local-first system.
           </p>
         </div>
       </Section>
