@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
 import { Section } from '@/components/site/section';
 import { SectionHeader } from '@/components/site/section-header';
 import { Card, CardContent } from '@/components/ui/card';
@@ -41,14 +40,6 @@ export default function ArgusProjectPage() {
           <p className="mt-6 text-lg leading-7 text-foreground/80 text-balance">
             A private personal operating system designed to unify identity, knowledge, files, finance, projects, time, and intelligence into one calm, local-first home.
           </p>
-          <div className="mt-8">
-            <Link
-              href="/now"
-              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            >
-              View Project →
-            </Link>
-          </div>
         </div>
       </Section>
 
