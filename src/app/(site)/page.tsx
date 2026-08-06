@@ -122,16 +122,15 @@ const journalEntries = [
     summary: 'ARGUS is being prepared for a small private beta. Focus is on stability, logging, and access control.',
   },
   {
+    date: '2026-07-22',
+    title: 'Calendar Module Stabilized',
+    summary: 'Calendar-dependent scheduling logic in ARGUS now handles timezone offsets and DST transitions without drift.',
+  },
+  {
     date: '2026-07-21',
     title: 'ARGUS v1.5.2 Released',
     summary: 'Portfolio valuation restored using confirmed public endpoint. Statistics synchronization fixed.',
     href: '/journal/2026-07-21-argus-v1.5.2',
-  },
-  {
-    date: '2026-07-20',
-    title: 'Design System Migration',
-    summary: 'Migrated web frontend to shadcn/ui with full dark mode support and accessibility improvements.',
-    href: '/journal/2026-07-20-design-system',
   },
 ];
 
