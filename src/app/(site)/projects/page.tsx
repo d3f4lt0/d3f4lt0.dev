@@ -100,18 +100,6 @@ const projects: Project[] = [
     repository: 'github.com/d3f4lt0/phantom-fetch',
     documentation: null,
   },
-  {
-    name: 'ARGUS',
-    description: 'A private personal operating system designed to unify identity, knowledge, money, files, time, and intelligence into one calm, local-first home.',
-    href: '/projects/argus',
-    status: 'building',
-    state: 'Private project currently in active engineering development.',
-    version: 'Private',
-    stack: [],
-    lastUpdated: '2026-08-06',
-    repository: null,
-    documentation: null,
-  },
 ];
 
 export default function ProjectsPage() {
