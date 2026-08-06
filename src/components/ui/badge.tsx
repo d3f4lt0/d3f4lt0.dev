@@ -9,6 +9,11 @@ interface StatusBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const statusStyles: Record<string, string> = {
+  building: 'border border-primary/30 bg-primary/10 text-primary',
+  shipped: 'border border-green-500/30 bg-green-500/10 text-green-500',
+  dormant: 'border border-muted-foreground/20 bg-muted/20 text-muted-foreground',
+  archived: 'border border-muted-foreground/30 bg-muted text-muted-foreground',
+  seeking: 'border border-blue-500/30 bg-blue-500/10 text-blue-500',
   active: 'border border-green-500/30 bg-green-500/10 text-green-500',
   inactive: 'border border-muted-foreground/30 bg-muted text-muted-foreground',
   error: 'border border-destructive/30 bg-destructive/10 text-destructive',
