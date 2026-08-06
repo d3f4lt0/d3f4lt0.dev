@@ -177,6 +177,13 @@ export default function HomePage() {
             >
               GitHub
             </a>
+            <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
+            <Link
+              href="/now"
+              className="link-underline text-sm font-medium text-primary"
+            >
+              Now
+            </Link>
           </div>
         </div>
       </Section>
