@@ -103,7 +103,29 @@ export default function NowPage() {
 
       <Section className="py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">
-          <SectionHeader number="05" title="Playing" />
+          <SectionHeader number="05" title="ARGUS" />
+          <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
+            <p>
+              🧠 <span className="font-semibold text-foreground/80">Building ARGUS</span> — a private personal operating system.
+            </p>
+            <p>
+              The goal is to replace the fragmented experience of using separate apps for identity, knowledge, files, finance, projects, time, and personal organization with one calm, local-first home.
+            </p>
+            <p>
+              ARGUS is designed around privacy, ownership, and long-term thinking. It is currently in active engineering development and is not yet ready for public release.
+            </p>
+            <div className="mt-2">
+              <span className="inline-flex items-center rounded-full border border-muted-foreground/20 bg-muted/20 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                🔒 Private
+              </span>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      <Section className="py-16 sm:py-24">
+        <div className="mx-auto max-w-2xl">
+          <SectionHeader number="06" title="Playing" />
           <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
             <p>
               osu! — I still play regularly whenever I have some free time. Mostly to relax, improve my rhythm, and have fun.

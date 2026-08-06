@@ -42,8 +42,6 @@ const journalEntries: JournalEntry[] = [
     title: 'Private Beta Preparation',
     summary: 'MEX ARGUS is being prepared for a small private beta. Focus is on stability, logging, and access control.',
     lessonsLearned: 'Private beta means real users. Logging and error reporting need to be production-grade before inviting anyone.',
-    relatedProject: 'MEX ARGUS',
-    relatedProjectHref: '/projects/mex-argus',
     status: 'active',
   },
   {
@@ -51,8 +49,6 @@ const journalEntries: JournalEntry[] = [
     title: 'Calendar Module Stabilized',
     summary: 'Calendar-dependent scheduling logic in ARGUS now handles timezone offsets and DST transitions without drift.',
     lessonsLearned: 'Timezone handling is easy to get wrong silently. Unit tests with fixed timestamps and explicit offsets caught three bugs before release.',
-    relatedProject: 'MEX ARGUS',
-    relatedProjectHref: '/projects/mex-argus',
     status: 'completed',
   },
   {
@@ -60,8 +56,6 @@ const journalEntries: JournalEntry[] = [
     title: 'ARGUS v1.5.2 Released',
     summary: 'Portfolio valuation restored using confirmed public endpoint. Statistics synchronization fixed.',
     lessonsLearned: 'Public endpoints can change without notice. Always validate response schemas before production use.',
-    relatedProject: 'MEX ARGUS',
-    relatedProjectHref: '/projects/mex-argus',
     status: 'completed',
     href: '/journal/2026-07-21-argus-v1.5.2',
   },
@@ -80,8 +74,6 @@ const journalEntries: JournalEntry[] = [
     title: 'API Integration Update',
     summary: 'MEX API integration switched to api.mex.live. HMAC SHA256 auth operational.',
     lessonsLearned: 'Network reliability requires explicit retry logic. Exponential backoff is not optional.',
-    relatedProject: 'MEX ARGUS',
-    relatedProjectHref: '/projects/mex-argus',
     status: 'completed',
     href: '/journal/2026-07-19-api-update',
   },
@@ -99,8 +91,6 @@ const journalEntries: JournalEntry[] = [
     title: 'Finance Module Redesign',
     summary: 'ARGUS finance module rewritten to support multiple quote assets and portfolio rebalancing calculations.',
     lessonsLearned: 'Separating valuation logic from persistence made the module testable in isolation.',
-    relatedProject: 'MEX ARGUS',
-    relatedProjectHref: '/projects/mex-argus',
     status: 'completed',
   },
   {
@@ -117,8 +107,6 @@ const journalEntries: JournalEntry[] = [
     title: 'Architecture Rewrite',
     summary: 'ARGUS backend reorganized into collector, indicators, decision, and execution engines. Each engine is independently testable.',
     lessonsLearned: 'Explicit boundaries between engines made it easier to replace components without breaking the rest of the system.',
-    relatedProject: 'MEX ARGUS',
-    relatedProjectHref: '/projects/mex-argus',
     status: 'completed',
   },
   {
@@ -126,8 +114,6 @@ const journalEntries: JournalEntry[] = [
     title: 'Files Module Completed',
     summary: 'ARGUS file handling module finished. Handles configuration loading, log rotation, and artifact cleanup.',
     lessonsLearned: 'Keep file paths relative to a known root. Absolute paths break when the deployment environment changes.',
-    relatedProject: 'MEX ARGUS',
-    relatedProjectHref: '/projects/mex-argus',
     status: 'completed',
   },
   {
@@ -189,8 +175,6 @@ const journalEntries: JournalEntry[] = [
     title: 'Started MEX ARGUS',
     summary: 'Began development of a personal trading intelligence platform for the MEX exchange. Initial scope: portfolio tracking and candlestick collection.',
     lessonsLearned: 'Define the data model before writing the collector. Schema drift is expensive to fix later.',
-    relatedProject: 'MEX ARGUS',
-    relatedProjectHref: '/projects/mex-argus',
     status: 'active',
   },
 ];
