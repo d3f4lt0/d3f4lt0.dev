@@ -106,7 +106,7 @@ export default function NowPage() {
           <SectionHeader number="05" title="ARGUS" />
           <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
             <p>
-              🧠 <span className="font-semibold text-foreground/80">Building ARGUS</span> — a private personal operating system.
+              <span className="font-semibold text-foreground/80">ARGUS</span> — a private personal operating system.
             </p>
             <p>
               The goal is to replace the fragmented experience of using separate apps for identity, knowledge, files, finance, projects, time, and personal organization with one calm, local-first home.
@@ -116,8 +116,16 @@ export default function NowPage() {
             </p>
             <div className="mt-2">
               <span className="inline-flex items-center rounded-full border border-muted-foreground/20 bg-muted/20 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-                🔒 Private
+                Private
               </span>
+            </div>
+            <div className="mt-4">
+              <a
+                href="/projects/argus"
+                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              >
+                View Project →
+              </a>
             </div>
           </div>
         </div>

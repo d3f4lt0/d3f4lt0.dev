@@ -64,3 +64,8 @@ coverage/
 .parcel-cache/
 .eslintcache
 .stylelintcache
+
+# Verification artifacts
+.playwright-mcp/
+lighthouse-*.json
+screenshot-*.png

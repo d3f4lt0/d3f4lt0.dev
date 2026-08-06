@@ -16,6 +16,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://d3f4lt0.dev/projects/argus</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://d3f4lt0.dev/journal</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
