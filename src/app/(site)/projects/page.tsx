@@ -5,7 +5,6 @@ import { Section } from '@/components/site/section';
 import { SectionHeader } from '@/components/site/section-header';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { StatusBadge } from '@/components/ui/badge';
-import { VersionBadge } from '@/components/ui/version-badge';
 import { Tag } from '@/components/ui/tag';
 import { PageTitle } from '@/components/site/page-title';
 import type { Project } from '@/lib/types';
@@ -34,7 +33,6 @@ const projects: Project[] = [
     href: '/projects/tls-proxy',
     status: 'dormant',
     state: 'v1 stable, awaiting mTLS work',
-    version: 'Active',
     stack: ['Go', 'TLS', 'Proxy'],
     lastUpdated: '2026-07-25',
     repository: 'github.com/d3f4lt0/tls-proxy',
@@ -46,7 +44,6 @@ const projects: Project[] = [
     href: '/projects/http2-inspector',
     status: 'dormant',
     state: 'CLI working, no GUI planned',
-    version: 'Active',
     stack: ['Rust', 'HTTP/2', 'CLI'],
     lastUpdated: '2026-07-22',
     repository: 'github.com/d3f4lt0/http2-inspector',
@@ -58,7 +55,6 @@ const projects: Project[] = [
     href: '/projects/quantum-stealth-kernel',
     status: 'dormant',
     state: 'experimental research project',
-    version: 'Active',
     stack: ['C', 'Linux Kernel', 'Security'],
     lastUpdated: '2026-07-18',
     repository: 'github.com/d3f4lt0/quantum-stealth-kernel',
@@ -70,7 +66,6 @@ const projects: Project[] = [
     href: '/projects/anti-bot-engine',
     status: 'dormant',
     state: 'signals layer frozen, future direction under evaluation',
-    version: 'Active',
     stack: ['TypeScript', 'Node.js', 'Security'],
     lastUpdated: '2026-07-15',
     repository: 'github.com/d3f4lt0/anti-bot-engine',
@@ -82,7 +77,6 @@ const projects: Project[] = [
     href: '/projects/fingerprint-audit',
     status: 'dormant',
     state: 'stable collection tool, analysis layer postponed',
-    version: 'Active',
     stack: ['Python', 'Selenium', 'Privacy'],
     lastUpdated: '2026-07-10',
     repository: 'github.com/d3f4lt0/fingerprint-audit',
@@ -94,7 +88,6 @@ const projects: Project[] = [
     href: '/projects/phantom-fetch',
     status: 'dormant',
     state: 'stealth fetcher complete, awaiting future maintenance',
-    version: 'Active',
     stack: ['Python', 'Playwright', 'CLI'],
     lastUpdated: '2026-07-05',
     repository: 'github.com/d3f4lt0/phantom-fetch',
@@ -106,7 +99,6 @@ const projects: Project[] = [
     href: '/projects/argus',
     status: 'building',
     state: 'Private project currently in active engineering development.',
-    version: 'Private',
     stack: [],
     lastUpdated: '2026-08-06',
     repository: null,
@@ -143,7 +135,6 @@ export default function ProjectsPage() {
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-xl tracking-tight">{project.name}</CardTitle>
                       <div className="flex items-center gap-2">
-                        <VersionBadge version={project.version} />
                         <StatusBadge status={project.status} />
                       </div>
                     </div>

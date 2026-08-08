@@ -6,7 +6,6 @@ export interface Project {
   href: string;
   status: ProjectStatus;
   state: string;
-  version: string;
   stack: string[];
   lastUpdated: string;
   repository?: string | null;
