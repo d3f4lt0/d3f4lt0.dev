@@ -7,6 +7,20 @@
     <meta name="robots" content="noindex,nofollow" />
   </head>
   <body>
+    <script>
+      window.CMS_MANUAL_INIT = true;
+    </script>
     <script src="https://unpkg.com/decap-cms@^3.4.0/dist/decap-cms.js"></script>
+    <script>
+      (function initCMS() {
+        if (window.CMS) {
+          window.CMS.init({
+            config: '/admin/config.yml'
+          });
+        } else {
+          setTimeout(initCMS, 50);
+        }
+      })();
+    </script>
   </body>
 </html>
