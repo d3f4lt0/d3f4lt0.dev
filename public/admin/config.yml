@@ -1,0 +1,126 @@
+# Decap CMS Configuration for d3f4lt0.dev
+
+backend:
+  name: github
+  repo: d3f4lt0/d3f4lt0.dev
+  branch: main
+  base_url: https://d3f4lt0.dev
+  auth_endpoint: https://decap-oauth.YOUR-SUBDOMAIN.workers.dev/api/auth
+
+publish_mode: editorial_workflow
+site_url: https://d3f4lt0.dev
+display_url: https://d3f4lt0.dev
+
+# ============================================================
+# PROJECTS — edit status, state, description
+# ============================================================
+collections:
+  - name: "projects"
+    label: "Projects"
+    label_singular: "Project"
+    folder: "content/projects"
+    create: false
+    delete: false
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    summary: "{{title}} · {{status}}"
+    sortable_fields: ["title", "status", "date"]
+    view_groups:
+      - label: "Status"
+        field: "status"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        hint: "Toggle: dormant ↔ building ↔ shipped"
+        options:
+          - {label: "🏗️ Building (active dev)", value: "building"}
+          - {label: "✅ Shipped (stable, public)", value: "shipped"}
+          - {label: "💤 Dormant (paused)", value: "dormant"}
+          - {label: "🪦 Archived (dead)", value: "archived"}
+          - {label: "🤝 Seeking (co-maintainer)", value: "seeking"}
+          - {label: "🔒 Private (not public)", value: "private"}
+        default: "dormant"
+      - {label: "State", name: "state", widget: "string", hint: "One-line honest description"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "GitHub URL", name: "github", widget: "string", required: false}
+      - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD"}
+      - {label: "Public?", name: "public", widget: "boolean", default: true}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
+
+# ============================================================
+# NOW PAGE — single document
+# ============================================================
+  - name: "now"
+    label: "📍 Now Page"
+    files:
+      - name: "now"
+        label: "Current Focus"
+        file: "content/now/index.md"
+        fields:
+          - {label: "Page Title", name: "title", widget: "string", default: "Now"}
+          - {label: "Last Updated", name: "updated", widget: "datetime"}
+          - {label: "Current Focus Title", name: "focus_title", widget: "string"}
+          - {label: "Status", name: "focus_status", widget: "select", options: ["building", "shipped", "dormant", "seeking", "private"]}
+          - {label: "One-liner", name: "focus_one_liner", widget: "string"}
+          - {label: "Focus Description", name: "focus_description", widget: "markdown"}
+          - {label: "Tags", name: "tags", widget: "list", required: false}
+          - {label: "Body", name: "body", widget: "markdown", required: false}
+
+# ============================================================
+# JOURNAL
+# ============================================================
+  - name: "journal"
+    label: "📓 Journal"
+    folder: "content/journal"
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    summary: "{{title}} · {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD"}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Summary", name: "summary", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+# ============================================================
+# STATIC PAGES
+# ============================================================
+  - name: "pages"
+    label: "📄 Pages"
+    files:
+      - name: "about"
+        label: "About"
+        file: "content/pages/about.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Body", name: "body", widget: "markdown"}
+      - name: "knowledge"
+        label: "Knowledge"
+        file: "content/pages/knowledge.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Body", name: "body", widget: "markdown"}
+
+# ============================================================
+# SITE SETTINGS
+# ============================================================
+  - name: "settings"
+    label: "⚙️ Site Settings"
+    files:
+      - name: "site"
+        label: "Site Config"
+        file: "content/settings/site.json"
+        fields:
+          - {label: "Site Title", name: "title", widget: "string"}
+          - {label: "Tagline", name: "tagline", widget: "string"}
+          - {label: "Sub-tagline (Sisyphus quote)", name: "subtagline", widget: "string"}
+          - {label: "Trade line", name: "trade_line", widget: "string"}
