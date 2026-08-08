@@ -5,7 +5,7 @@ backend:
   repo: d3f4lt0/d3f4lt0.dev
   branch: main
   base_url: https://d3f4lt0.dev
-  auth_endpoint: https://decap-oauth.YOUR-SUBDOMAIN.workers.dev/api/auth
+  auth_endpoint: https://decap-oauth.d3f4lt0.workers.dev/api/auth
 
 publish_mode: editorial_workflow
 site_url: https://d3f4lt0.dev
