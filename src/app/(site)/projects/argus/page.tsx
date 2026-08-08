@@ -5,60 +5,71 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Tag } from '@/components/ui/tag';
 import { PageTitle } from '@/components/site/page-title';
 import { StatusBadge } from '@/components/ui/badge';
+import { getProjectBySlug } from '@/lib/content';
 
-export const metadata: Metadata = {
-  title: 'ARGUS',
-  description: 'One home for your digital life.\nIdentity, knowledge, files, money, projects, time, and AI—unified in one local-first system.',
-  openGraph: {
-    title: 'ARGUS — d3f4lt0',
-    description: 'One home for your digital life.\nIdentity, knowledge, files, money, projects, time, and AI—unified in one local-first system.',
-    url: 'https://d3f4lt0.dev/projects/argus',
-    siteName: 'd3f4lt0',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'ARGUS — d3f4lt0',
-    description: 'One home for your digital life.\nIdentity, knowledge, files, money, projects, time, and AI—unified in one local-first system.',
-  },
+type Props = {
+  params: Promise<{ slug: string }>;
 };
 
-const rooms = [
-  { name: 'Identity', description: 'Profiles, credentials, and access—one place for who you are online.' },
-  { name: 'Mind', description: 'Notes, reading, and knowledge—things you learn and want to keep.' },
-  { name: 'Money', description: 'Understand your money—not just track it.' },
-  { name: 'Files', description: 'Everything worth keeping, always within reach.' },
-  { name: 'Time', description: 'Plan your time with clarity, not complexity.' },
-  { name: 'Projects', description: 'Turn ideas into finished work, one step at a time.' },
-  { name: 'AI', description: 'Helpful when you ask. Invisible when you don\'t.' },
-];
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
 
-const principles = [
-  'Privacy by default. Data stays local unless you choose otherwise.',
-  'Local-first. No cloud dependency. No forced subscriptions.',
-  'Ownership. You control the format, the storage, and the future.',
-  'Long-term. Built to outlive platforms, frameworks, and trends.',
-];
+  if (!project) {
+    return {
+      title: 'Project Not Found',
+    };
+  }
 
-export default function ArgusProjectPage() {
+  return {
+    title: project.title,
+    description: project.description,
+    openGraph: {
+      title: `${project.title} — d3f4lt0`,
+      description: project.description,
+      url: `https://d3f4lt0.dev/projects/${project.slug}`,
+      siteName: 'd3f4lt0',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.title} — d3f4lt0`,
+      description: project.description,
+    },
+  };
+}
+
+export default async function ArgusProjectPage({ params }: Props) {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
+
+  if (!project) {
+    return (
+      <div className="page-fade-in">
+        <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
+          <div className="mx-auto max-w-2xl">
+            <PageTitle>Project Not Found</PageTitle>
+          </div>
+        </Section>
+      </div>
+    );
+  }
+
   return (
     <div className="page-fade-in">
       <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
         <div className="mx-auto max-w-2xl">
           <div className="flex items-center gap-3 mb-6">
-            <StatusBadge status="building" label="In Progress" />
+            <StatusBadge status={project.status} label="In Progress" />
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <span className="text-xs font-mono text-muted-foreground/40 tracking-wider">
               Private
             </span>
           </div>
-          <h1 className="text-4xl font-medium tracking-tight text-foreground sm:text-5xl">ARGUS</h1>
+          <h1 className="text-4xl font-medium tracking-tight text-foreground sm:text-5xl">{project.title}</h1>
           <div className="mt-1 h-px w-12 bg-border/60" aria-hidden="true" />
           <p className="mt-6 text-lg leading-7 text-foreground/80 text-balance">
-            One home for your digital life.
-          </p>
-          <p className="mt-2 text-lg leading-7 text-foreground/80 text-balance">
-            Identity, knowledge, files, money, projects, time, and AI—unified in one local-first system.
+            {project.description}
           </p>
         </div>
       </Section>
@@ -86,7 +97,15 @@ export default function ArgusProjectPage() {
             </p>
           </div>
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            {rooms.map((room) => (
+            {[
+              { name: 'Identity', description: 'Profiles, credentials, and access—one place for who you are online.' },
+              { name: 'Mind', description: 'Notes, reading, and knowledge—things you learn and want to keep.' },
+              { name: 'Money', description: 'Understand your money—not just track it.' },
+              { name: 'Files', description: 'Everything worth keeping, always within reach.' },
+              { name: 'Time', description: 'Plan your time with clarity, not complexity.' },
+              { name: 'Projects', description: 'Turn ideas into finished work, one step at a time.' },
+              { name: 'AI', description: 'Helpful when you ask. Invisible when you don\'t.' },
+            ].map((room) => (
               <Card key={room.name} className="border-border/60 bg-card/50">
                 <CardContent className="p-5">
                   <h3 className="text-sm font-medium text-foreground/80">{room.name}</h3>
@@ -116,9 +135,10 @@ export default function ArgusProjectPage() {
         <div className="mx-auto max-w-2xl">
           <SectionHeader number="04" title="Principles" />
           <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
-            {principles.map((principle) => (
-              <p key={principle}>{principle}</p>
-            ))}
+            <p>Privacy by default. Data stays local unless you choose otherwise.</p>
+            <p>Local-first. No cloud dependency. No forced subscriptions.</p>
+            <p>Ownership. You control the format, the storage, and the future.</p>
+            <p>Long-term. Built to outlive platforms, frameworks, and trends.</p>
           </div>
         </div>
       </Section>

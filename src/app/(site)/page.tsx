@@ -8,7 +8,7 @@ import { StatusBadge } from '@/components/ui/badge';
 import { Tag } from '@/components/ui/tag';
 import { TimelineItem } from '@/components/ui/timeline-item';
 import { PageTitle } from '@/components/site/page-title';
-import type { Project } from '@/lib/types';
+import { getProjects, getJournalEntries } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'd3f4lt0',
@@ -27,106 +27,10 @@ export const metadata: Metadata = {
   },
 };
 
-const projects: Project[] = [
-  {
-    name: 'tls-proxy',
-    description: 'Lightweight TLS termination proxy with configurable cipher suites and mutual TLS support.',
-    href: '/projects/tls-proxy',
-    status: 'dormant',
-    state: 'v1 stable, awaiting mTLS work',
-    stack: ['Go', 'TLS', 'Proxy'],
-    lastUpdated: '2026-07-25',
-    repository: 'github.com/d3f4lt0/tls-proxy',
-    documentation: null,
-  },
-  {
-    name: 'http2-inspector',
-    description: 'Low-level HTTP/2 frame inspector and analysis tool for debugging protocol-level behavior.',
-    href: '/projects/http2-inspector',
-    status: 'dormant',
-    state: 'CLI working, no GUI planned',
-    stack: ['Rust', 'HTTP/2', 'CLI'],
-    lastUpdated: '2026-07-22',
-    repository: 'github.com/d3f4lt0/http2-inspector',
-    documentation: null,
-  },
-  {
-    name: 'quantum-stealth-kernel',
-    description: 'Experimental kernel module exploring process cloaking and filesystem obfuscation techniques.',
-    href: '/projects/quantum-stealth-kernel',
-    status: 'dormant',
-    state: 'experimental research project',
-    stack: ['C', 'Linux Kernel', 'Security'],
-    lastUpdated: '2026-07-18',
-    repository: 'github.com/d3f4lt0/quantum-stealth-kernel',
-    documentation: null,
-  },
-  {
-    name: 'anti-bot-engine',
-    description: 'Signal-based bot detection layer using behavioral fingerprinting and adaptive challenges.',
-    href: '/projects/anti-bot-engine',
-    status: 'dormant',
-    state: 'signals layer frozen, future direction under evaluation',
-    stack: ['TypeScript', 'Node.js', 'Security'],
-    lastUpdated: '2026-07-15',
-    repository: 'github.com/d3f4lt0/anti-bot-engine',
-    documentation: null,
-  },
-  {
-    name: 'fingerprint-audit',
-    description: 'Browser fingerprint collection and comparison tool for privacy and security research.',
-    href: '/projects/fingerprint-audit',
-    status: 'dormant',
-    state: 'stable collection tool, analysis layer postponed',
-    stack: ['Python', 'Selenium', 'Privacy'],
-    lastUpdated: '2026-07-10',
-    repository: 'github.com/d3f4lt0/fingerprint-audit',
-    documentation: null,
-  },
-  {
-    name: 'phantom-fetch',
-    description: 'Headless content fetcher with stealth mode, cookie handling, and structured output.',
-    href: '/projects/phantom-fetch',
-    status: 'dormant',
-    state: 'stealth fetcher complete, awaiting future maintenance',
-    stack: ['Python', 'Playwright', 'CLI'],
-    lastUpdated: '2026-07-05',
-    repository: 'github.com/d3f4lt0/phantom-fetch',
-    documentation: null,
-  },
-  {
-    name: 'ARGUS',
-     description: 'One home for your digital life.\nIdentity, knowledge, files, money, projects, time, and AI—unified in one local-first system.',
-    href: '/projects/argus',
-    status: 'building',
-    state: 'Private project currently in active engineering development.',
-    stack: [],
-    lastUpdated: '2026-08-06',
-    repository: null,
-    documentation: null,
-  },
-];
+export default async function HomePage() {
+  const projects = getProjects();
+  const journalEntries = getJournalEntries().slice(0, 3);
 
-const journalEntries = [
-  {
-    date: '2026-07-27',
-    title: 'Private Beta Preparation',
-    summary: 'ARGUS is being prepared for a small private beta. Focus is on stability, logging, and access control.',
-  },
-  {
-    date: '2026-07-22',
-    title: 'Calendar Module Stabilized',
-    summary: 'Calendar-dependent scheduling logic in ARGUS now handles timezone offsets and DST transitions without drift.',
-  },
-  {
-    date: '2026-07-21',
-    title: 'ARGUS v1.5.2 Released',
-    summary: 'Portfolio valuation restored using confirmed public endpoint. Statistics synchronization fixed.',
-    href: '/journal/2026-07-21-argus-v1.5.2',
-  },
-];
-
-export default function HomePage() {
   return (
     <div className="page-fade-in">
       <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24 lg:pb-[96px]">
@@ -195,11 +99,11 @@ export default function HomePage() {
         <div className="mx-auto mt-12 max-w-2xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {projects.map((project) => (
-              <Link key={project.name} href={project.href} className="group block">
+              <Link key={project.slug} href={`/projects/${project.slug}`} className="group block">
                 <Card className="card-hover-lift h-full border-border/60 bg-card/50 backdrop-blur-sm">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl tracking-tight">{project.name}</CardTitle>
+                      <CardTitle className="text-xl tracking-tight">{project.title}</CardTitle>
                       <div className="flex items-center gap-2">
                         <StatusBadge status={project.status} />
                       </div>
@@ -210,7 +114,7 @@ export default function HomePage() {
                     <p className="text-sm text-muted-foreground/80">{project.state}</p>
                     <div className="mt-3 flex flex-wrap items-center gap-4">
                       <div className="flex flex-wrap gap-2">
-                        {project.stack.map((item) => (
+                        {project.tags.map((item) => (
                           <Tag key={item}>{item}</Tag>
                         ))}
                       </div>
@@ -218,10 +122,10 @@ export default function HomePage() {
                     <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground/70">
                       <span className="inline-flex items-center gap-1.5">
                         <Clock className="h-3 w-3" />
-                        {project.lastUpdated}
+                        {project.date}
                       </span>
-                      {project.repository && (
-                        <span className="truncate">{project.repository}</span>
+                      {project.github && (
+                        <span className="truncate">{project.github}</span>
                       )}
                     </div>
                     <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary/80 transition-colors duration-150 ease-out group-hover:text-primary">
