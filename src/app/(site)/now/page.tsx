@@ -49,13 +49,32 @@ export default async function NowPage() {
         </div>
       </Section>
 
+      {bodySections.map((section, index) => {
+        const lines = section.split('\n');
+        const title = lines[0].replace(/^#+\s*/, '');
+        const content = lines.slice(1).join('\n').trim();
+
+        return (
+          <Section key={index} className="py-16 sm:py-24">
+            <div className="mx-auto max-w-2xl">
+              <SectionHeader number={`0${index + 1}`} title={title} />
+              <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
+                {content.split('\n\n').map((paragraph, pIndex) => (
+                  <p key={pIndex}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
+          </Section>
+        );
+      })}
+
       <Section className="py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">
           <div className="flex items-center gap-3 mb-4">
             <StatusBadge status={nowPage.focus_status} />
-            <span className="text-xs font-mono text-muted-foreground/60">🔒 Private</span>
+            <span className="text-xs font-mono text-muted-foreground/60">Private</span>
           </div>
-          <SectionHeader number="01" title={nowPage.focus_title} />
+          <SectionHeader number={`0${bodySections.length + 1}`} title={nowPage.focus_title} />
           <p className="mt-4 text-base leading-7 text-foreground/80">
             {nowPage.focus_one_liner}
           </p>
@@ -66,25 +85,6 @@ export default async function NowPage() {
           </div>
         </div>
       </Section>
-
-      {bodySections.map((section, index) => {
-        const lines = section.split('\n');
-        const title = lines[0].replace(/^#+\s*/, '');
-        const content = lines.slice(1).join('\n').trim();
-
-        return (
-          <Section key={index} className="py-16 sm:py-24">
-            <div className="mx-auto max-w-2xl">
-              <SectionHeader number={`0${index + 2}`} title={title} />
-              <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
-                {content.split('\n\n').map((paragraph, pIndex) => (
-                  <p key={pIndex}>{paragraph}</p>
-                ))}
-              </div>
-            </div>
-          </Section>
-        );
-      })}
     </div>
   );
 }
