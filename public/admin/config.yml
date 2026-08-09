@@ -97,26 +97,10 @@ collections:
       - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD"}
       - {label: "Tags", name: "tags", widget: "list", required: false}
       - {label: "Summary", name: "summary", widget: "text", required: false}
+      - {label: "Status", name: "status", widget: "string", required: false}
+      - {label: "Related Project", name: "relatedProject", widget: "string", required: false}
+      - {label: "Related Project Href", name: "relatedProjectHref", widget: "string", required: false}
       - {label: "Body", name: "body", widget: "markdown"}
-
-# ============================================================
-# STATIC PAGES
-# ============================================================
-  - name: "pages"
-    label: "📄 Pages"
-    files:
-      - name: "about"
-        label: "About"
-        file: "content/pages/about.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Body", name: "body", widget: "markdown"}
-      - name: "knowledge"
-        label: "Knowledge"
-        file: "content/pages/knowledge.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Body", name: "body", widget: "markdown"}
 
 # ============================================================
 # SITE SETTINGS
@@ -131,4 +115,4 @@ collections:
           - {label: "Site Title", name: "title", widget: "string"}
           - {label: "Tagline", name: "tagline", widget: "string"}
           - {label: "Sub-tagline (Sisyphus quote)", name: "subtagline", widget: "string"}
-  - {label: "Trade line", name: "trade_line", widget: "string"}
+          - {label: "Trade line", name: "trade_line", widget: "string"}
