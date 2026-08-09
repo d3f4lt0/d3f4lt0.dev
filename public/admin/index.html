@@ -214,13 +214,15 @@
     <script>
       window.CMS_MANUAL_INIT = true;
     </script>
-    <script src="https://unpkg.com/decap-cms@^3.4.0/dist/decap-cms.js"></script>
+    <script src="https://unpkg.com/decap-cms@3.4.0/dist/decap-cms.js"></script>
     <script>
       (function initCMS() {
         if (window.CMS) {
-          window.CMS.init({
-            config: '/admin/config.yml?v=2'
-          });
+          try {
+            window.CMS.init();
+          } catch (err) {
+            console.error('[CMS] init error', err);
+          }
         } else {
           setTimeout(initCMS, 50);
         }
