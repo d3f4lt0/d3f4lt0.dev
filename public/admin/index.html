@@ -17,14 +17,14 @@
          d3f4lt0.dev Brand Variables
          ============================================ */
       :root {
-        --bg: #f4f1ea;
-        --bg-2: #efeae0;
-        --paper: #fbf9f4;
-        --ink: #1a1f2c;
-        --ink-2: #4a5364;
-        --ink-3: #8b8a82;
-        --line: #e0d9cb;
-        --line-soft: #ebe5d6;
+        --bg: #0f1115;
+        --bg-2: #161a21;
+        --paper: #1a1d23;
+        --ink: #e6e6e6;
+        --ink-2: #a0a4b0;
+        --ink-3: #6b7080;
+        --line: #2a2e38;
+        --line-soft: #22262e;
         --primary: #2f6f5e;
         --primary-2: #4a8e7c;
         --accent: #c97b3f;
@@ -41,10 +41,7 @@
       }
 
       body {
-        background-image:
-          radial-gradient(ellipse 1200px 600px at 0% 0%, rgba(47, 111, 94, 0.06), transparent),
-          radial-gradient(ellipse 800px 500px at 100% 100%, rgba(201, 123, 63, 0.05), transparent) !important;
-        background-attachment: fixed;
+        background: var(--bg) !important;
       }
 
       /* ============================================
@@ -190,7 +187,7 @@
       [class*="Login"] button,
       [class*="loginPage"] button {
         background: var(--ink) !important;
-        color: white !important;
+        color: var(--bg) !important;
         border: none !important;
         padding: 11px 28px !important;
         border-radius: 8px !important;
@@ -199,7 +196,8 @@
       }
       [class*="Login"] button:hover,
       [class*="loginPage"] button:hover {
-        background: #0f1420 !important;
+        background: var(--primary) !important;
+        color: white !important;
       }
 
       /* ============================================
@@ -212,22 +210,6 @@
     </style>
   </head>
   <body>
-    <script>
-      window.CMS_MANUAL_INIT = true;
-    </script>
     <script src="https://unpkg.com/decap-cms@3.4.0/dist/decap-cms.js"></script>
-    <script>
-      (function initCMS() {
-        if (window.CMS) {
-          try {
-            window.CMS.init();
-          } catch (err) {
-            console.error('[CMS] init error', err);
-          }
-        } else {
-          setTimeout(initCMS, 50);
-        }
-      })();
-    </script>
   </body>
 </html>
