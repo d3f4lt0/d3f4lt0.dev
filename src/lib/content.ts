@@ -54,10 +54,12 @@ export function getJournalEntries(): JournalEntry[] {
   return readAllMarkdownFiles<JournalEntry>(journalDir, 'date');
 }
 
-export function getNowPage(): NowPage | null {
+export function getNowPage(): (NowPage & { content: string }) | null {
   const nowPath = path.join(contentDir, 'now', 'index.md');
   if (!fs.existsSync(nowPath)) {
     return null;
   }
-  return readMarkdownFile<NowPage>(nowPath);
+  const fileContent = fs.readFileSync(nowPath, 'utf-8');
+  const { data, content } = matter(fileContent);
+  return { ...(data as NowPage), content };
 }

@@ -1,8 +1,6 @@
 import { Metadata } from 'next';
 import { Section } from '@/components/site/section';
 import { SectionHeader } from '@/components/site/section-header';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tag } from '@/components/ui/tag';
 import { PageTitle } from '@/components/site/page-title';
 import { StatusBadge } from '@/components/ui/badge';
 import { getNowPage } from '@/lib/content';
@@ -31,7 +29,7 @@ export default async function NowPage() {
     return null;
   }
 
-  const bodyParagraphs = nowPage.body
+  const paragraphs = (nowPage.content || '')
     .split('\n\n')
     .map((p) => p.trim())
     .filter((p) => p.length > 0);
@@ -52,14 +50,33 @@ export default async function NowPage() {
 
       <Section className="py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">
+          <div className="flex items-center gap-3 mb-4">
+            <StatusBadge status={nowPage.focus_status} />
+            <span className="text-xs font-mono text-muted-foreground/60">🔒 Private</span>
+          </div>
           <SectionHeader number="01" title={nowPage.focus_title} />
+          <p className="mt-4 text-base leading-7 text-foreground/80">
+            {nowPage.focus_one_liner}
+          </p>
           <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
-            {bodyParagraphs.map((paragraph, index) => (
+            {nowPage.focus_description.split('\n\n').map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
           </div>
         </div>
       </Section>
+
+      {paragraphs.length > 0 && (
+        <Section className="py-16 sm:py-24">
+          <div className="mx-auto max-w-2xl">
+            <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
+              {paragraphs.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+        </Section>
+      )}
     </div>
   );
 }
