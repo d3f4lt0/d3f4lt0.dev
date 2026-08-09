@@ -210,6 +210,64 @@
     </style>
   </head>
   <body>
+    <script>
+      window.CMS_MANUAL_INIT = true;
+    </script>
+    <script>
+      (function () {
+        const PROXY_ORIGIN = 'https://decap-oauth.d3f4lt0.workers.dev';
+        const PREFIX = 'authorization:github:success:';
+        const KEYS = [
+          'decapecms.github.token',
+          'decapecms_auth',
+          'decapecms.auth',
+          'decapecms.token',
+          'decapecms_github',
+        ];
+
+        function parsePayload(data) {
+          if (typeof data !== 'string' || !data.startsWith(PREFIX)) return null;
+          try {
+            const json = data.split(':').slice(3).join(':');
+            const content = JSON.parse(json);
+            if (content && content.token) return content.token;
+          } catch (_e) { /* ignore */ }
+          return null;
+        }
+
+        function persist(token) {
+          const payload = JSON.stringify({ token });
+          KEYS.forEach((key) => {
+            try { localStorage.setItem(key, payload); } catch (_e) { /* ignore */ }
+          });
+        }
+
+        window.addEventListener('message', (event) => {
+          if (event.origin !== PROXY_ORIGIN) return;
+          const token = parsePayload(event.data);
+          if (!token) return;
+          persist(token);
+          try {
+            if (window.location.hash.includes('access_token')) {
+              window.location.hash = '';
+            }
+          } catch (_e) { /* ignore */ }
+          window.location.reload();
+        });
+      })();
+    </script>
     <script src="https://unpkg.com/decap-cms@3.4.0/dist/decap-cms.js"></script>
+    <script>
+      (function () {
+        function initCMS() {
+          try { window.CMS.init({ config: '/admin/config.yml' }); } catch (_e) { /* ignore */ }
+        }
+        if (document.readyState === 'complete') {
+          initCMS();
+        } else {
+          window.addEventListener('load', initCMS);
+        }
+      })();
+    </script>
   </body>
 </html>
