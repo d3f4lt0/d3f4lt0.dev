@@ -29,10 +29,11 @@ export default async function NowPage() {
     return null;
   }
 
-  const paragraphs = (nowPage.content || '')
-    .split('\n\n')
-    .map((p) => p.trim())
-    .filter((p) => p.length > 0);
+  const body = (nowPage.content || '').trim();
+  const bodySections = body
+    .split('\n## ')
+    .map((section) => section.trim())
+    .filter((section) => section.length > 0);
 
   return (
     <div className="page-fade-in">
@@ -66,17 +67,24 @@ export default async function NowPage() {
         </div>
       </Section>
 
-      {paragraphs.length > 0 && (
-        <Section className="py-16 sm:py-24">
-          <div className="mx-auto max-w-2xl">
-            <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
-              {paragraphs.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
+      {bodySections.map((section, index) => {
+        const lines = section.split('\n');
+        const title = lines[0].replace(/^#+\s*/, '');
+        const content = lines.slice(1).join('\n').trim();
+
+        return (
+          <Section key={index} className="py-16 sm:py-24">
+            <div className="mx-auto max-w-2xl">
+              <SectionHeader number={`0${index + 2}`} title={title} />
+              <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
+                {content.split('\n\n').map((paragraph, pIndex) => (
+                  <p key={pIndex}>{paragraph}</p>
+                ))}
+              </div>
             </div>
-          </div>
-        </Section>
-      )}
+          </Section>
+        );
+      })}
     </div>
   );
 }
