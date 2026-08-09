@@ -132,3 +132,5 @@ collections:
           - {label: "Tagline", name: "tagline", widget: "string"}
           - {label: "Sub-tagline (Sisyphus quote)", name: "subtagline", widget: "string"}
           - {label: "Trade line", name: "trade_line", widget: "string"}
+
+# cache bust: 2026-08-09 09:34:37
