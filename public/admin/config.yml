@@ -12,12 +12,10 @@ site_url: https://d3f4lt0.dev
 display_url: https://d3f4lt0.dev
 
 # ============================================================
-# MEDIA (required by schema even if unused)
+# MEDIA
 # ============================================================
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
-media_library:
-  name: null
 
 # ============================================================
 # PROJECTS — edit status, state, description
