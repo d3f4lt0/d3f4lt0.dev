@@ -5,15 +5,24 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Tag } from '@/components/ui/tag';
 import { PageTitle } from '@/components/site/page-title';
 import { StatusBadge } from '@/components/ui/badge';
-import { getProjectBySlug } from '@/lib/content';
+import { getProjects } from '@/lib/content';
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
+export async function generateStaticParams() {
+  const projects = getProjects();
+  return projects
+    .filter((project) => project.public !== false)
+    .map((project) => ({
+      slug: project.slug,
+    }));
+}
+
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = getProjects().find((p) => p.slug === slug);
 
   if (!project) {
     return {
@@ -41,7 +50,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = getProjects().find((p) => p.slug === slug);
 
   if (!project) {
     return (
