@@ -1,10 +1,214 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>d3f4lt0 · content manager</title>
     <meta name="robots" content="noindex,nofollow" />
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      /* ============================================
+         d3f4lt0.dev Brand Variables
+         ============================================ */
+      :root {
+        --bg: #f4f1ea;
+        --bg-2: #efeae0;
+        --paper: #fbf9f4;
+        --ink: #1a1f2c;
+        --ink-2: #4a5364;
+        --ink-3: #8b8a82;
+        --line: #e0d9cb;
+        --line-soft: #ebe5d6;
+        --primary: #2f6f5e;
+        --primary-2: #4a8e7c;
+        --accent: #c97b3f;
+        --accent-2: #b06367;
+      }
+
+      /* ============================================
+         Global font + body
+         ============================================ */
+      html, body, #nc-root, [class*="App"] {
+        font-family: 'Outfit', -apple-system, sans-serif !important;
+        background: var(--bg) !important;
+        color: var(--ink) !important;
+      }
+
+      body {
+        background-image:
+          radial-gradient(ellipse 1200px 600px at 0% 0%, rgba(47, 111, 94, 0.06), transparent),
+          radial-gradient(ellipse 800px 500px at 100% 100%, rgba(201, 123, 63, 0.05), transparent) !important;
+        background-attachment: fixed;
+      }
+
+      /* ============================================
+         Sidebar — deep green
+         ============================================ */
+      [class*="Sidebar"],
+      [class*="sidebar"],
+      aside,
+      [class*="Navigation"] {
+        background: var(--primary) !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+      [class*="Sidebar"] *,
+      [class*="sidebar"] *,
+      aside * {
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+      [class*="Sidebar"] a:hover,
+      [class*="sidebar"] a:hover {
+        background: rgba(255, 255, 255, 0.08) !important;
+      }
+      [class*="Sidebar"] [class*="active"],
+      [class*="sidebar"] [class*="active"] {
+        background: rgba(255, 255, 255, 0.12) !important;
+        border-left: 3px solid var(--accent) !important;
+      }
+      [class*="Sidebar"] [class*="badge"],
+      [class*="sidebar"] [class*="Badge"] {
+        background: rgba(255, 255, 255, 0.12) !important;
+        color: white !important;
+      }
+
+      /* ============================================
+         Top bar / breadcrumb
+         ============================================ */
+      [class*="TopBar"],
+      [class*="AppHeader"],
+      header[class*="App"] {
+        background: var(--paper) !important;
+        border-bottom: 1px solid var(--line) !important;
+        color: var(--ink) !important;
+      }
+      [class*="TopBar"] *,
+      [class*="AppHeader"] * {
+        color: var(--ink) !important;
+      }
+
+      /* ============================================
+         Main content area
+         ============================================ */
+      [class*="MainPane"],
+      [class*="Content"],
+      main {
+        background: var(--bg) !important;
+      }
+
+      /* ============================================
+         Cards / panels
+         ============================================ */
+      [class*="Card"],
+      [class*="Panel"],
+      [class*="ListCard"] {
+        background: var(--paper) !important;
+        border: 1px solid var(--line) !important;
+        border-radius: 8px !important;
+      }
+
+      /* ============================================
+         Buttons
+         ============================================ */
+      button[class*="primary"],
+      button[type="button"][class*="default"],
+      [class*="PublishButton"] button,
+      a[class*="primary"] {
+        background: var(--primary) !important;
+        border-color: var(--primary) !important;
+        color: white !important;
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+      }
+      button[class*="primary"]:hover,
+      [class*="PublishButton"] button:hover {
+        background: var(--primary-2) !important;
+      }
+
+      /* ============================================
+         Inputs
+         ============================================ */
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="url"],
+      input[type="number"],
+      input[type="date"],
+      input[type="datetime-local"],
+      textarea,
+      select {
+        background: var(--paper) !important;
+        border: 1px solid var(--line) !important;
+        color: var(--ink) !important;
+        border-radius: 6px !important;
+        font-family: 'Outfit', sans-serif !important;
+      }
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 3px rgba(47, 111, 94, 0.15) !important;
+        outline: none !important;
+      }
+
+      /* ============================================
+         Headings — serif (DM Serif Display)
+         ============================================ */
+      h1, h2, h3, h4 {
+        font-family: 'DM Serif Display', serif !important;
+        color: var(--ink) !important;
+        font-weight: 400 !important;
+        letter-spacing: -0.005em !important;
+      }
+
+      /* ============================================
+         Mono / code
+         ============================================ */
+      code, pre, [class*="mono"], [class*="Mono"] {
+        font-family: 'JetBrains Mono', monospace !important;
+      }
+
+      /* ============================================
+         Status badges (custom for d3f4lt0)
+         ============================================ */
+      [class*="StatusIndicator"] {
+        font-weight: 500 !important;
+      }
+
+      /* ============================================
+         Login screen — custom override
+         ============================================ */
+      [class*="Login"],
+      [class*="loginPage"] {
+        background: var(--bg) !important;
+      }
+      [class*="Login"] button,
+      [class*="loginPage"] button {
+        background: var(--ink) !important;
+        color: white !important;
+        border: none !important;
+        padding: 11px 28px !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
+        font-family: 'Outfit', sans-serif !important;
+      }
+      [class*="Login"] button:hover,
+      [class*="loginPage"] button:hover {
+        background: #0f1420 !important;
+      }
+
+      /* ============================================
+         Scrollbar (subtle, brand)
+         ============================================ */
+      ::-webkit-scrollbar { width: 10px; height: 10px; }
+      ::-webkit-scrollbar-track { background: var(--bg); }
+      ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 5px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--ink-3); }
+    </style>
   </head>
   <body>
     <script>
@@ -15,7 +219,7 @@
       (function initCMS() {
         if (window.CMS) {
           window.CMS.init({
-            config: '/admin/config.yml'
+            config: '/admin/config.yml?v=2'
           });
         } else {
           setTimeout(initCMS, 50);
