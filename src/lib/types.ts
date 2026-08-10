@@ -5,7 +5,6 @@ export interface Project {
   slug: string;
   status: ProjectStatus;
   state: string;
-<<<<<<< ours
   description: string;
   tags: string[];
   github: string;
@@ -35,10 +34,4 @@ export interface NowPage {
   focus_description: string;
   tags: string[];
   body: string;
-=======
-  stack: string[];
-  lastUpdated: string;
-  repository?: string | null;
-  documentation?: string | null;
->>>>>>> theirs
 }
