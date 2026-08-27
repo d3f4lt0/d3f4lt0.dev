@@ -1,6 +1,6 @@
 ---
 title: "Now"
-updated: "2026-08-10"
+updated: "2026-08-27"
 focus_title: "Building ARGUS"
 focus_status: "building"
 focus_one_liner: "A private operating system for my digital life."
