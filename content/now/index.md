@@ -1,15 +1,6 @@
 ---
 title: "Now"
-updated: "2026-08-27"
-focus_title: "Building ARGUS"
-focus_status: "building"
-focus_one_liner: "A private operating system for my digital life."
-focus_description: |
-  ARGUS is designed around privacy, ownership, and long-term thinking. It is currently in active engineering development and is not yet ready for public release.
-tags:
-  - local-first
-  - privacy
-  - building
+updated: "2026-09-12"
 ---
 
 ## Learning

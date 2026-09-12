@@ -81,6 +81,18 @@ export default async function HomePage() {
               Now
             </Link>
           </div>
+
+          <div className="mt-8 border-l-2 border-sky-400/20 pl-6 sm:pl-8">
+            <p className="text-xs font-mono text-sky-400/70">Current mode</p>
+            <p className="mt-1 text-sm font-medium text-foreground/80">Dopamine Detox</p>
+            <p className="mt-1 text-sm text-muted-foreground/75">
+              Most accounts are intentionally offline for now. If something genuinely urgent needs my attention,{' '}
+              <a href="mailto:d3f4lt0@proton.me" className="link-underline text-foreground/75">
+                email
+              </a>{' '}
+              is the best way to reach me.
+            </p>
+          </div>
         </div>
       </Section>
 
