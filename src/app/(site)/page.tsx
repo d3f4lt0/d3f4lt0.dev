@@ -8,6 +8,7 @@ import { StatusBadge } from '@/components/ui/badge';
 import { Tag } from '@/components/ui/tag';
 import { TimelineItem } from '@/components/ui/timeline-item';
 import { PageTitle } from '@/components/site/page-title';
+import { AngelWings } from '@/components/site/angel-wings';
 import { getProjects, getJournalEntries } from '@/lib/content';
 
 export const metadata: Metadata = {
@@ -33,8 +34,21 @@ export default async function HomePage() {
 
   return (
     <div className="page-fade-in">
-      <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24 lg:pb-[96px]">
-        <div className="mx-auto max-w-2xl">
+      <Section
+        className="relative pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24 lg:pb-[96px]"
+        style={{
+          backgroundImage: 'url(/images/starfield-bg.jpg)',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+        }}
+      >
+        <div
+          className="absolute inset-0 bg-white/70 dark:bg-black/60"
+          aria-hidden="true"
+        />
+        <AngelWings className="hidden lg:block" />
+        <div className="relative mx-auto max-w-2xl">
           <PageTitle>d3f4lt0</PageTitle>
           <div className="mt-1 h-px w-12 bg-border/60" aria-hidden="true" />
           <p className="mt-8 text-lg leading-7 text-foreground/80 text-balance">
@@ -79,6 +93,13 @@ export default async function HomePage() {
               className="link-underline text-sm font-medium text-primary"
             >
               Now
+            </Link>
+            <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
+            <Link
+              href="/about#contact"
+              className="link-underline text-sm font-medium text-primary"
+            >
+              Contact
             </Link>
           </div>
 

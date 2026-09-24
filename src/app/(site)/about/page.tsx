@@ -82,7 +82,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section className="py-16 sm:py-24">
+      <Section className="py-16 sm:py-24" id="contact">
         <div className="mx-auto max-w-2xl">
           <SectionHeader
             number="03"

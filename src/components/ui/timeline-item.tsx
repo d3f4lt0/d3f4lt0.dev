@@ -43,7 +43,7 @@ export function TimelineItem({
       {...props}
     >
       <div className="flex w-[100px] shrink-0 flex-col justify-center">
-        <span className="text-xs font-mono text-muted-foreground/70 transition-colors duration-150 ease-out group-hover:text-foreground">
+        <span className="nerv-readout transition-colors duration-150 ease-out group-hover:text-[hsl(var(--nerv-cyan))]">
           {date}
         </span>
       </div>
@@ -77,9 +77,7 @@ export function TimelineItem({
         )}
         {lessonsLearned && (
           <div className="mt-2 rounded-md border border-border/60 bg-card/30 p-3">
-            <span className="text-xs font-mono text-muted-foreground/50 uppercase tracking-wider">
-              Lessons learned
-            </span>
+            <span className="nerv-readout">Lessons learned</span>
             <p className="mt-1 text-sm text-muted-foreground/80 leading-6">{lessonsLearned}</p>
           </div>
         )}

@@ -50,7 +50,9 @@ export function Header() {
   }, [mobileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="relative sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="nerv-corner nerv-corner--tl" aria-hidden="true" />
+      <div className="nerv-corner nerv-corner--tr" aria-hidden="true" />
       <div className="mx-auto flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center space-x-2">

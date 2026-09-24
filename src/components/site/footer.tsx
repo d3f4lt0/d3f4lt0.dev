@@ -2,7 +2,9 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/40">
+    <footer className="relative border-t border-border/40">
+      <div className="nerv-corner nerv-corner--bl" aria-hidden="true" />
+      <div className="nerv-corner nerv-corner--br" aria-hidden="true" />
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
         <nav className="flex gap-6 text-sm text-muted-foreground" aria-label="Footer">
           <Link href="/" className="transition-colors hover:text-foreground">
@@ -21,7 +23,7 @@ export function Footer() {
             About
           </Link>
         </nav>
-        <p className="text-xs text-muted-foreground/40">
+        <p className="text-xs text-muted-foreground/40 font-mono tracking-wider">
           d3f4lt0.dev
         </p>
       </div>

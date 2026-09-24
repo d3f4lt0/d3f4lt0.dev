@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google';
 import { Providers } from '@/components/providers';
+import { NervGrid } from '@/components/site/nerv-grid';
 import './globals.css';
 
 const inter = Inter({
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`}>
         <div className="grain-overlay" aria-hidden="true" />
         <Providers>{children}</Providers>
+        <NervGrid />
       </body>
     </html>
   );

@@ -22,17 +22,15 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   const Comp = as;
   return (
-    <div className={cn('space-y-3', className)} {...props}>
+    <div className={cn('relative space-y-3', className)} {...props}>
+      <div className="nerv-corner nerv-corner--tl" aria-hidden="true" />
+      <div className="nerv-corner nerv-corner--tr" aria-hidden="true" />
       <div className="flex items-center gap-4">
         {number && (
-          <span className="text-xs font-medium text-muted-foreground/40 font-mono tracking-wider">
-            {number}
-          </span>
+          <span className="nerv-readout">{number}</span>
         )}
         {label && !number && (
-          <span className="text-xs font-medium text-muted-foreground/50 uppercase tracking-wider">
-            {label}
-          </span>
+          <span className="nerv-readout">{label}</span>
         )}
       </div>
       <Comp className="text-2xl font-medium text-foreground sm:text-3xl tracking-tight">
