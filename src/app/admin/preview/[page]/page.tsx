@@ -10,7 +10,7 @@ import { PageTitle } from '@/components/site/page-title';
 import { Tag } from '@/components/ui/tag';
 import { TimelineItem } from '@/components/ui/timeline-item';
 import { Editable } from '@/components/admin/editable';
-import { BlockRenderer, Block } from '@/components/admin/block-renderer';
+import { BlockRenderer, BLOCK_TYPES, createDefaultBlock, Block } from '@/components/admin/block-renderer';
 
 type PageSlug = 'home' | 'now' | 'projects' | 'journal' | 'settings' | 'about' | 'knowledge' | 'docs' | 'docs-architecture' | '404' | 'header' | 'footer';
 
@@ -59,7 +59,7 @@ export default function AdminPreviewPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const [site, setSite] = useState<{ title: string; tagline: string; subtagline: string; trade_line: string; home_title?: string; home_tagline?: string; projects_description?: string; journal_description?: string; now_intro?: string; brand_name?: string; nav_projects?: string; nav_journal?: string; nav_knowledge?: string; nav_now?: string; nav_about?: string; footer_brand?: string; footer_projects?: string; footer_journal?: string; footer_knowledge?: string; footer_about?: string; mode_label?: string; mode_status?: string; mode_body?: string; mode_email_label?: string; view_project?: string; view_all_journal?: string; view_archive?: string; docs_title?: string; docs_description?: string; docs_architecture_title?: string; docs_architecture_description?: string; docs_view_architecture?: string; docs_back_to_docs?: string; knowledge_title?: string; knowledge_description?: string; knowledge_interests_title?: string; knowledge_interests_description?: string; knowledge_learning_title?: string; knowledge_learning_description?: string; knowledge_stack_title?: string; knowledge_stack_description?: string; knowledge_working_style_title?: string; knowledge_working_style_description?: string; '404_title'?: string; '404_body'?: string; '404_return_home'?: string; [key: string]: any } | null>(null);
+  const [site, setSite] = useState<Record<string, any> | null>(null);
   const [siteSha, setSiteSha] = useState<string | undefined>();
 
   const [now, setNow] = useState<{ title: string; updated: string; sections: { title: string; content: string }[] } | null>(null);
@@ -73,19 +73,19 @@ export default function AdminPreviewPage() {
   const [journalSha, setJournalSha] = useState<Record<string, string | undefined>>({});
   const [selectedJournal, setSelectedJournal] = useState<string | null>(null);
 
-  const [about, setAbout] = useState<{ title: string; body: string; philosophy_1?: string; philosophy_2?: string; outside?: string; contact_intro?: string; [key: string]: any } | null>(null);
+  const [about, setAbout] = useState<Record<string, any> | null>(null);
   const [aboutSha, setAboutSha] = useState<string | undefined>();
 
-  const [knowledge, setKnowledge] = useState<any>(null);
+  const [knowledge, setKnowledge] = useState<Record<string, any> | null>(null);
   const [knowledgeSha, setKnowledgeSha] = useState<string | undefined>();
 
-  const [docs, setDocs] = useState<any>(null);
+  const [docs, setDocs] = useState<Record<string, any> | null>(null);
   const [docsSha, setDocsSha] = useState<string | undefined>();
 
-  const [docsArch, setDocsArch] = useState<any>(null);
+  const [docsArch, setDocsArch] = useState<Record<string, any> | null>(null);
   const [docsArchSha, setDocsArchSha] = useState<string | undefined>();
 
-  const [notFound, setNotFound] = useState<any>(null);
+  const [notFound, setNotFound] = useState<Record<string, any> | null>(null);
   const [notFoundSha, setNotFoundSha] = useState<string | undefined>();
 
   useEffect(() => {
@@ -413,6 +413,37 @@ export default function AdminPreviewPage() {
     }
   };
 
+  const addBlock = (pageKey: 'about' | 'home' | 'knowledge', setter: React.Dispatch<React.SetStateAction<Record<string, any> | null>>, sha: string | undefined, filename: string) => {
+    const data = pageKey === 'about' ? about : pageKey === 'home' ? site : knowledge;
+    if (!data || !origin) return;
+    const blocks = (data.blocks || []) as Block[];
+    const newBlock = createDefaultBlock('text', blocks.length);
+    const updated = { ...data, blocks: [...blocks, newBlock] };
+    setter(updated);
+    const content = JSON.stringify(updated, null, 2);
+    apiPost(origin, filename, content, sha, `Add block to ${filename}`).then(() => {
+      if (pageKey === 'about') setAboutSha(undefined);
+      else if (pageKey === 'home') setSiteSha(undefined);
+      else setKnowledgeSha(undefined);
+      setSuccess('Block added.');
+    }).catch((err) => setError(err.message));
+  };
+
+  const removeBlock = (pageKey: 'about' | 'home' | 'knowledge', blockId: string, setter: React.Dispatch<React.SetStateAction<Record<string, any> | null>>, sha: string | undefined, filename: string) => {
+    const data = pageKey === 'about' ? about : pageKey === 'home' ? site : knowledge;
+    if (!data || !origin) return;
+    const blocks = (data.blocks || [] as Block[]).filter((b: Block) => b.id !== blockId);
+    const updated = { ...data, blocks };
+    setter(updated);
+    const content = JSON.stringify(updated, null, 2);
+    apiPost(origin, filename, content, sha, `Remove block ${blockId} from ${filename}`).then(() => {
+      if (pageKey === 'about') setAboutSha(undefined);
+      else if (pageKey === 'home') setSiteSha(undefined);
+      else setKnowledgeSha(undefined);
+      setSuccess('Block removed.');
+    }).catch((err) => setError(err.message));
+  };
+
   if (loading || !origin) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -422,7 +453,6 @@ export default function AdminPreviewPage() {
   }
 
   if (page === 'about' && about) {
-    const contacts = about.contacts || [];
     const blocks = (about.blocks || []) as Block[];
 
     return (
@@ -442,9 +472,30 @@ export default function AdminPreviewPage() {
           <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
             <div className="mx-auto max-w-2xl">
               <PageTitle>{about.title}</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{about.body}</p>
+              <Editable value={about.body} onSave={(val) => saveAbout({ body: val })} className="mt-4 text-lg leading-7 text-foreground/80 text-balance" as="p" saving={saving} />
             </div>
           </Section>
+
+          <div className="mb-6">
+            <div className="flex items-center gap-3">
+              <label className="block text-sm font-medium">Add block:</label>
+              <select
+                onChange={(e) => {
+                  if (e.target.value) {
+                    addBlock('about', setAbout, aboutSha, 'content/about.json');
+                    e.target.value = '';
+                  }
+                }}
+                className="block w-full max-w-xs rounded-md border border-border bg-background px-3 py-2 text-sm"
+                disabled={saving}
+              >
+                <option value="">Select block type...</option>
+                {BLOCK_TYPES.map((def) => (
+                  <option key={def.type} value={def.type}>{def.label}</option>
+                ))}
+              </select>
+            </div>
+          </div>
 
           <Section className="py-16 sm:py-24">
             <div className="mx-auto max-w-2xl space-y-10">
@@ -452,7 +503,17 @@ export default function AdminPreviewPage() {
                 .filter((b) => b.id !== 'about-hero-title' && b.id !== 'about-hero-body')
                 .sort((a, b) => a.order - b.order)
                 .map((block) => (
-                  <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveAbout({ [updated.id]: updated })} saving={saving} />
+                  <div key={block.id} className="relative">
+                    <button
+                      type="button"
+                      onClick={() => removeBlock('about', block.id, setAbout, aboutSha, 'content/about.json')}
+                      className="absolute -top-2 -right-2 rounded-full bg-destructive/10 p-1 text-xs text-destructive hover:bg-destructive/20"
+                      disabled={saving}
+                    >
+                      ×
+                    </button>
+                    <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveAbout({ [updated.id]: updated })} saving={saving} />
+                  </div>
                 ))}
             </div>
           </Section>
@@ -477,102 +538,83 @@ export default function AdminPreviewPage() {
           {success && <div className="mb-6 rounded-md border border-primary/40 bg-primary/10 p-4 text-sm text-primary">{success}</div>}
 
           <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium">Site Title</label>
-              <input type="text" value={site.title} onChange={(e) => saveSite({ title: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Tagline</label>
-              <textarea value={site.tagline} onChange={(e) => saveSite({ tagline: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" rows={3} disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Subtagline</label>
-              <textarea value={site.subtagline} onChange={(e) => saveSite({ subtagline: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" rows={3} disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Trade Line</label>
-              <textarea value={site.trade_line} onChange={(e) => saveSite({ trade_line: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" rows={3} disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Home Title</label>
-              <input type="text" value={site.home_title || ''} onChange={(e) => saveSite({ home_title: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Home Tagline</label>
-              <textarea value={site.home_tagline || ''} onChange={(e) => saveSite({ home_tagline: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" rows={3} disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Projects Description</label>
-              <textarea value={site.projects_description || ''} onChange={(e) => saveSite({ projects_description: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" rows={3} disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Journal Description</label>
-              <textarea value={site.journal_description || ''} onChange={(e) => saveSite({ journal_description: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" rows={3} disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Now Intro</label>
-              <textarea value={site.now_intro || ''} onChange={(e) => saveSite({ now_intro: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" rows={3} disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Brand Name</label>
-              <input type="text" value={site.brand_name || ''} onChange={(e) => saveSite({ brand_name: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nav Projects</label>
-              <input type="text" value={site.nav_projects || ''} onChange={(e) => saveSite({ nav_projects: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nav Journal</label>
-              <input type="text" value={site.nav_journal || ''} onChange={(e) => saveSite({ nav_journal: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nav Knowledge</label>
-              <input type="text" value={site.nav_knowledge || ''} onChange={(e) => saveSite({ nav_knowledge: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nav Now</label>
-              <input type="text" value={site.nav_now || ''} onChange={(e) => saveSite({ nav_now: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nav About</label>
-              <input type="text" value={site.nav_about || ''} onChange={(e) => saveSite({ nav_about: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Footer Brand</label>
-              <input type="text" value={site.footer_brand || ''} onChange={(e) => saveSite({ footer_brand: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Footer Projects</label>
-              <input type="text" value={site.footer_projects || ''} onChange={(e) => saveSite({ footer_projects: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Footer Journal</label>
-              <input type="text" value={site.footer_journal || ''} onChange={(e) => saveSite({ footer_journal: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Footer Knowledge</label>
-              <input type="text" value={site.footer_knowledge || ''} onChange={(e) => saveSite({ footer_knowledge: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Footer About</label>
-              <input type="text" value={site.footer_about || ''} onChange={(e) => saveSite({ footer_about: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Mode Label</label>
-              <input type="text" value={site.mode_label || ''} onChange={(e) => saveSite({ mode_label: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Mode Status</label>
-              <input type="text" value={site.mode_status || ''} onChange={(e) => saveSite({ mode_status: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Mode Body</label>
-              <textarea value={site.mode_body || ''} onChange={(e) => saveSite({ mode_body: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" rows={3} disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Mode Email Label</label>
-              <input type="text" value={site.mode_email_label || ''} onChange={(e) => saveSite({ mode_email_label: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
+            {[
+              { key: 'title', label: 'Site Title', type: 'text' },
+              { key: 'tagline', label: 'Tagline', type: 'textarea' },
+              { key: 'subtagline', label: 'Subtagline', type: 'textarea' },
+              { key: 'trade_line', label: 'Trade Line', type: 'textarea' },
+              { key: 'home_title', label: 'Home Title', type: 'text' },
+              { key: 'home_tagline', label: 'Home Tagline', type: 'textarea' },
+              { key: 'projects_description', label: 'Projects Description', type: 'textarea' },
+              { key: 'journal_description', label: 'Journal Description', type: 'textarea' },
+              { key: 'now_intro', label: 'Now Intro', type: 'textarea' },
+              { key: 'brand_name', label: 'Brand Name', type: 'text' },
+              { key: 'nav_projects', label: 'Nav Projects', type: 'text' },
+              { key: 'nav_journal', label: 'Nav Journal', type: 'text' },
+              { key: 'nav_knowledge', label: 'Nav Knowledge', type: 'text' },
+              { key: 'nav_now', label: 'Nav Now', type: 'text' },
+              { key: 'nav_about', label: 'Nav About', type: 'text' },
+              { key: 'footer_brand', label: 'Footer Brand', type: 'text' },
+              { key: 'footer_projects', label: 'Footer Projects', type: 'text' },
+              { key: 'footer_journal', label: 'Footer Journal', type: 'text' },
+              { key: 'footer_knowledge', label: 'Footer Knowledge', type: 'text' },
+              { key: 'footer_about', label: 'Footer About', type: 'text' },
+              { key: 'mode_label', label: 'Mode Label', type: 'text' },
+              { key: 'mode_status', label: 'Mode Status', type: 'text' },
+              { key: 'mode_body', label: 'Mode Body', type: 'textarea' },
+              { key: 'mode_email_label', label: 'Mode Email Label', type: 'text' },
+              { key: 'view_project', label: 'View Project', type: 'text' },
+              { key: 'view_all_journal', label: 'View All Journal', type: 'text' },
+              { key: 'view_archive', label: 'View Archive', type: 'text' },
+              { key: 'docs_title', label: 'Docs Title', type: 'text' },
+              { key: 'docs_description', label: 'Docs Description', type: 'textarea' },
+              { key: 'docs_architecture_title', label: 'Docs Architecture Title', type: 'text' },
+              { key: 'docs_architecture_description', label: 'Docs Architecture Description', type: 'textarea' },
+              { key: 'docs_view_architecture', label: 'Docs View Architecture', type: 'text' },
+              { key: 'docs_back_to_docs', label: 'Docs Back To Docs', type: 'text' },
+              { key: 'knowledge_title', label: 'Knowledge Title', type: 'text' },
+              { key: 'knowledge_description', label: 'Knowledge Description', type: 'textarea' },
+              { key: 'knowledge_interests_title', label: 'Knowledge Interests Title', type: 'text' },
+              { key: 'knowledge_interests_description', label: 'Knowledge Interests Description', type: 'textarea' },
+              { key: 'knowledge_learning_title', label: 'Knowledge Learning Title', type: 'text' },
+              { key: 'knowledge_learning_description', label: 'Knowledge Learning Description', type: 'textarea' },
+              { key: 'knowledge_stack_title', label: 'Knowledge Stack Title', type: 'text' },
+              { key: 'knowledge_stack_description', label: 'Knowledge Stack Description', type: 'textarea' },
+              { key: 'knowledge_working_style_title', label: 'Knowledge Working Style Title', type: 'text' },
+              { key: 'knowledge_working_style_description', label: 'Knowledge Working Style Description', type: 'textarea' },
+              { key: '404_title', label: '404 Title', type: 'text' },
+              { key: '404_body', label: '404 Body', type: 'textarea' },
+              { key: '404_return_home', label: '404 Return Home', type: 'text' },
+              { key: 'projects_section_title', label: 'Projects Section Title', type: 'text' },
+              { key: 'projects_section_description', label: 'Projects Section Description', type: 'textarea' },
+              { key: 'journal_section_title', label: 'Journal Section Title', type: 'text' },
+              { key: 'journal_section_description', label: 'Journal Section Description', type: 'textarea' },
+              { key: 'home_projects_section_title', label: 'Home Projects Section Title', type: 'text' },
+              { key: 'home_projects_section_description', label: 'Home Projects Section Description', type: 'textarea' },
+              { key: 'home_journal_section_title', label: 'Home Journal Section Title', type: 'text' },
+              { key: 'home_journal_section_description', label: 'Home Journal Section Description', type: 'textarea' },
+            ].map((field) => (
+              <div key={field.key}>
+                <label className="block text-sm font-medium">{field.label}</label>
+                {field.type === 'textarea' ? (
+                  <textarea
+                    value={site[field.key] || ''}
+                    onChange={(e) => saveSite({ [field.key]: e.target.value })}
+                    className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                    rows={3}
+                    disabled={saving}
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    value={site[field.key] || ''}
+                    onChange={(e) => saveSite({ [field.key]: e.target.value })}
+                    className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                    disabled={saving}
+                  />
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -610,17 +652,17 @@ export default function AdminPreviewPage() {
                   ))}
               </div>
               <div className="mt-10 flex flex-wrap items-center gap-6">
-                <Link href="/projects" className="link-underline text-sm font-medium text-primary">{site.nav_projects || 'Projects'}</Link>
+                <Link href="/projects" className="link-underline text-sm font-medium text-primary"><Editable value={site.nav_projects || 'Projects'} onSave={(val) => saveSite({ nav_projects: val })} as="span" saving={saving} /></Link>
                 <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
-                <Link href="/journal" className="link-underline text-sm font-medium text-primary">{site.nav_journal || 'Journal'}</Link>
+                <Link href="/journal" className="link-underline text-sm font-medium text-primary"><Editable value={site.nav_journal || 'Journal'} onSave={(val) => saveSite({ nav_journal: val })} as="span" saving={saving} /></Link>
                 <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
-                <Link href="/knowledge" className="link-underline text-sm font-medium text-primary">{site.nav_knowledge || 'Knowledge'}</Link>
+                <Link href="/knowledge" className="link-underline text-sm font-medium text-primary"><Editable value={site.nav_knowledge || 'Knowledge'} onSave={(val) => saveSite({ nav_knowledge: val })} as="span" saving={saving} /></Link>
                 <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
                 <a href="https://github.com/d3f4lt0" target="_blank" rel="noopener noreferrer" className="link-underline text-sm font-medium text-primary">GitHub</a>
                 <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
-                <Link href="/now" className="link-underline text-sm font-medium text-primary">{site.nav_now || 'Now'}</Link>
+                <Link href="/now" className="link-underline text-sm font-medium text-primary"><Editable value={site.nav_now || 'Now'} onSave={(val) => saveSite({ nav_now: val })} as="span" saving={saving} /></Link>
                 <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
-                <Link href="/about#contact" className="link-underline text-sm font-medium text-primary">Contact</Link>
+                <Link href="/about#contact" className="link-underline text-sm font-medium text-primary"><Editable value={site.nav_about || 'About'} onSave={(val) => saveSite({ nav_about: val })} as="span" saving={saving} /></Link>
               </div>
 
               <div className="mt-8 border-l-2 border-sky-400/20 pl-6 sm:pl-8">
@@ -647,7 +689,7 @@ export default function AdminPreviewPage() {
 
           <Section className="py-16 sm:py-24">
             <div className="mx-auto max-w-2xl">
-              <SectionHeader number="01" title="Projects" description={site.projects_description || 'Things I\'ve built.'} />
+              <SectionHeader number="01" title={site.home_projects_section_title || 'Projects'} description={site.home_projects_section_description || site.projects_description || "Things I've built."} />
             </div>
             <div className="mx-auto mt-12 max-w-2xl">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -682,7 +724,7 @@ export default function AdminPreviewPage() {
 
           <Section className="py-16 sm:py-24">
             <div className="mx-auto max-w-2xl">
-              <SectionHeader number="02" title="Journal" description={site.journal_description || 'Recent notes and updates.'} />
+              <SectionHeader number="02" title={site.home_journal_section_title || 'Journal'} description={site.home_journal_section_description || site.journal_description || 'Recent notes and updates.'} />
             </div>
             <div className="mx-auto mt-12 max-w-2xl">
               <div className="divide-y divide-border/60">
@@ -718,7 +760,7 @@ export default function AdminPreviewPage() {
           <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
             <div className="mx-auto max-w-2xl">
               <PageTitle>Now</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{site?.now_intro || 'A snapshot of current work, learning, and focus. Updated manually.'}</p>
+              <Editable value={site?.now_intro || 'A snapshot of current work, learning, and focus. Updated manually.'} onSave={(val) => saveSite({ now_intro: val })} className="mt-4 text-lg leading-7 text-foreground/80 text-balance" as="p" saving={saving} />
               <p className="mt-2 text-xs text-muted-foreground/60">Last updated: <Editable value={now.updated} onSave={(val) => setNow({ ...now, updated: val })} as="span" saving={saving} /></p>
             </div>
           </Section>
@@ -778,7 +820,7 @@ export default function AdminPreviewPage() {
           <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
             <div className="mx-auto max-w-2xl">
               <PageTitle>Projects</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{site?.projects_description || 'Open-source tools and systems built for engineering problems.'}</p>
+              <Editable value={site?.projects_description || 'Open-source tools and systems built for engineering problems.'} onSave={(val) => saveSite({ projects_description: val })} className="mt-4 text-lg leading-7 text-foreground/80 text-balance" as="p" saving={saving} />
             </div>
           </Section>
 
@@ -847,7 +889,7 @@ export default function AdminPreviewPage() {
           <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
             <div className="mx-auto max-w-2xl">
               <PageTitle>Journal</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{site?.journal_description || 'Journal of decisions, milestones, and lessons learned.'}</p>
+              <Editable value={site?.journal_description || 'Journal of decisions, milestones, and lessons learned.'} onSave={(val) => saveSite({ journal_description: val })} className="mt-4 text-lg leading-7 text-foreground/80 text-balance" as="p" saving={saving} />
             </div>
           </Section>
 
@@ -859,16 +901,8 @@ export default function AdminPreviewPage() {
               <Card className="border-border/60 bg-card/50 backdrop-blur-sm">
                 <CardContent className="p-0">
                   <div className="divide-y divide-border/60">
-                    <TimelineItem
-                      date={entry.date}
-                      title={entry.title}
-                      summary={entry.summary}
-                      href={entry.href}
-                      lessonsLearned=""
-                      relatedProject={entry.relatedProject}
-                      relatedProjectHref={entry.relatedProjectHref}
-                      status={entry.status}
-                    />
+                    <Editable value={entry.title} onSave={(val) => saveJournal(entry._slug, { title: val })} className="text-base font-medium text-foreground/80" as="h3" saving={saving} />
+                    <Editable value={entry.summary} onSave={(val) => saveJournal(entry._slug, { summary: val })} className="text-sm text-muted-foreground/80" as="p" saving={saving} />
                   </div>
                 </CardContent>
               </Card>
@@ -899,12 +933,43 @@ export default function AdminPreviewPage() {
           {error && <div className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">{error}</div>}
           {success && <div className="mb-6 rounded-md border border-primary/40 bg-primary/10 p-4 text-sm text-primary">{success}</div>}
 
+          <div className="mb-6">
+            <div className="flex items-center gap-3">
+              <label className="block text-sm font-medium">Add block:</label>
+              <select
+                onChange={(e) => {
+                  if (e.target.value) {
+                    addBlock('knowledge', setKnowledge, knowledgeSha, 'content/knowledge.json');
+                    e.target.value = '';
+                  }
+                }}
+                className="block w-full max-w-xs rounded-md border border-border bg-background px-3 py-2 text-sm"
+                disabled={saving}
+              >
+                <option value="">Select block type...</option>
+                {BLOCK_TYPES.map((def) => (
+                  <option key={def.type} value={def.type}>{def.label}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <Section className="py-16 sm:py-24">
             <div className="mx-auto max-w-2xl space-y-10">
               {blocks
                 .sort((a, b) => a.order - b.order)
                 .map((block) => (
-                  <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveKnowledge({ [updated.id]: updated })} saving={saving} />
+                  <div key={block.id} className="relative">
+                    <button
+                      type="button"
+                      onClick={() => removeBlock('knowledge', block.id, setKnowledge, knowledgeSha, 'content/knowledge.json')}
+                      className="absolute -top-2 -right-2 rounded-full bg-destructive/10 p-1 text-xs text-destructive hover:bg-destructive/20"
+                      disabled={saving}
+                    >
+                      ×
+                    </button>
+                    <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveKnowledge({ [updated.id]: updated })} saving={saving} />
+                  </div>
                 ))}
             </div>
           </Section>
@@ -931,7 +996,7 @@ export default function AdminPreviewPage() {
           <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
             <div className="mx-auto max-w-2xl">
               <PageTitle>{docs.title || 'Documentation'}</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{docs.description || 'Architecture and design documentation.'}</p>
+              <Editable value={docs.description || 'Architecture and design documentation.'} onSave={(val) => saveDocs({ description: val })} className="mt-4 text-lg leading-7 text-foreground/80 text-balance" as="p" saving={saving} />
             </div>
           </Section>
 
@@ -939,7 +1004,7 @@ export default function AdminPreviewPage() {
             <div className="mx-auto max-w-2xl">
               <SectionHeader number="01" title={docs.architecture_title || 'Architecture'} description={docs.architecture_description || 'System design, data flow, and component interactions.'} />
               <div className="mt-6">
-                <Link href="/docs/architecture" className="link-underline text-sm font-medium text-primary">{docs.view_architecture || 'View architecture documentation'}</Link>
+                <Link href="/docs/architecture" className="link-underline text-sm font-medium text-primary"><Editable value={docs.view_architecture || 'View architecture documentation'} onSave={(val) => saveDocs({ view_architecture: val })} as="span" saving={saving} /></Link>
               </div>
             </div>
           </Section>
@@ -966,7 +1031,7 @@ export default function AdminPreviewPage() {
           <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
             <div className="mx-auto max-w-2xl">
               <PageTitle>{docsArch.title || 'Architecture'}</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{docsArch.description || 'System design, data flow, and component interactions.'}</p>
+              <Editable value={docsArch.description || 'System design, data flow, and component interactions.'} onSave={(val) => saveDocsArch({ description: val })} className="mt-4 text-lg leading-7 text-foreground/80 text-balance" as="p" saving={saving} />
             </div>
           </Section>
 
@@ -983,7 +1048,7 @@ export default function AdminPreviewPage() {
                 ))}
               </div>
               <div className="mt-8">
-                <Link href="/docs" className="link-underline text-sm font-medium text-primary">{docsArch.back_to_docs || 'Back to documentation'}</Link>
+                <Link href="/docs" className="link-underline text-sm font-medium text-primary"><Editable value={docsArch.back_to_docs || 'Back to documentation'} onSave={(val) => saveDocsArch({ back_to_docs: val })} as="span" saving={saving} /></Link>
               </div>
             </div>
           </Section>
@@ -1010,9 +1075,9 @@ export default function AdminPreviewPage() {
           <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
             <div className="mx-auto max-w-2xl">
               <PageTitle>{notFound.title || 'Not Found'}</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{notFound.body || 'The page you are looking for does not exist.'}</p>
+              <Editable value={notFound.body || 'The page you are looking for does not exist.'} onSave={(val) => saveNotFound({ body: val })} className="mt-4 text-lg leading-7 text-foreground/80 text-balance" as="p" saving={saving} />
               <div className="mt-8">
-                <Link href="/" className="link-underline text-sm font-medium text-primary">{notFound.return_home || 'Return home'}</Link>
+                <Link href="/" className="link-underline text-sm font-medium text-primary"><Editable value={notFound.return_home || 'Return home'} onSave={(val) => saveNotFound({ return_home: val })} as="span" saving={saving} /></Link>
               </div>
             </div>
           </Section>
@@ -1037,30 +1102,25 @@ export default function AdminPreviewPage() {
           {success && <div className="mb-6 rounded-md border border-primary/40 bg-primary/10 p-4 text-sm text-primary">{success}</div>}
 
           <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium">Brand Name</label>
-              <input type="text" value={site.brand_name || ''} onChange={(e) => saveSite({ brand_name: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nav Projects</label>
-              <input type="text" value={site.nav_projects || ''} onChange={(e) => saveSite({ nav_projects: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nav Journal</label>
-              <input type="text" value={site.nav_journal || ''} onChange={(e) => saveSite({ nav_journal: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nav Knowledge</label>
-              <input type="text" value={site.nav_knowledge || ''} onChange={(e) => saveSite({ nav_knowledge: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nav Now</label>
-              <input type="text" value={site.nav_now || ''} onChange={(e) => saveSite({ nav_now: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nav About</label>
-              <input type="text" value={site.nav_about || ''} onChange={(e) => saveSite({ nav_about: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
+            {[
+              { key: 'brand_name', label: 'Brand Name' },
+              { key: 'nav_projects', label: 'Nav Projects' },
+              { key: 'nav_journal', label: 'Nav Journal' },
+              { key: 'nav_knowledge', label: 'Nav Knowledge' },
+              { key: 'nav_now', label: 'Nav Now' },
+              { key: 'nav_about', label: 'Nav About' },
+            ].map((field) => (
+              <div key={field.key}>
+                <label className="block text-sm font-medium">{field.label}</label>
+                <input
+                  type="text"
+                  value={site[field.key] || ''}
+                  onChange={(e) => saveSite({ [field.key]: e.target.value })}
+                  className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  disabled={saving}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -1083,26 +1143,24 @@ export default function AdminPreviewPage() {
           {success && <div className="mb-6 rounded-md border border-primary/40 bg-primary/10 p-4 text-sm text-primary">{success}</div>}
 
           <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium">Footer Brand</label>
-              <input type="text" value={site.footer_brand || ''} onChange={(e) => saveSite({ footer_brand: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Footer Projects</label>
-              <input type="text" value={site.footer_projects || ''} onChange={(e) => saveSite({ footer_projects: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Footer Journal</label>
-              <input type="text" value={site.footer_journal || ''} onChange={(e) => saveSite({ footer_journal: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Footer Knowledge</label>
-              <input type="text" value={site.footer_knowledge || ''} onChange={(e) => saveSite({ footer_knowledge: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Footer About</label>
-              <input type="text" value={site.footer_about || ''} onChange={(e) => saveSite({ footer_about: e.target.value })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving} />
-            </div>
+            {[
+              { key: 'footer_brand', label: 'Footer Brand' },
+              { key: 'footer_projects', label: 'Footer Projects' },
+              { key: 'footer_journal', label: 'Footer Journal' },
+              { key: 'footer_knowledge', label: 'Footer Knowledge' },
+              { key: 'footer_about', label: 'Footer About' },
+            ].map((field) => (
+              <div key={field.key}>
+                <label className="block text-sm font-medium">{field.label}</label>
+                <input
+                  type="text"
+                  value={site[field.key] || ''}
+                  onChange={(e) => saveSite({ [field.key]: e.target.value })}
+                  className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  disabled={saving}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
