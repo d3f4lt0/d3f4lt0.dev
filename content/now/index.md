@@ -12,4 +12,4 @@ Re-reading Goodnight Punpun, focusing more on its themes, symbolism, and visual 
 
 ## Technical
 
-Deepening engineering skills by learning lower-level, system-oriented technology and applying it through practical software work.
+Deepening engineering skills by learning lower-level, system-oriented technology and applying it through practical software work...
