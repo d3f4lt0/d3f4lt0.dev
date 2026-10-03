@@ -11,6 +11,7 @@ import { Tag } from '@/components/ui/tag';
 import { TimelineItem } from '@/components/ui/timeline-item';
 import { Editable } from '@/components/admin/editable';
 import { BlockRenderer, BLOCK_TYPES, createDefaultBlock, Block } from '@/components/admin/block-renderer';
+import { BlockEditor } from '@/components/admin/block-editor';
 
 type PageSlug = 'home' | 'now' | 'projects' | 'journal' | 'settings' | 'about' | 'knowledge' | 'docs' | 'docs-architecture' | '404' | 'header' | 'footer';
 
@@ -476,45 +477,13 @@ export default function AdminPreviewPage() {
             </div>
           </Section>
 
-          <div className="mb-6">
-            <div className="flex items-center gap-3">
-              <label className="block text-sm font-medium">Add block:</label>
-              <select
-                onChange={(e) => {
-                  if (e.target.value) {
-                    addBlock('about', setAbout, aboutSha, 'content/about.json');
-                    e.target.value = '';
-                  }
-                }}
-                className="block w-full max-w-xs rounded-md border border-border bg-background px-3 py-2 text-sm"
-                disabled={saving}
-              >
-                <option value="">Select block type...</option>
-                {BLOCK_TYPES.map((def) => (
-                  <option key={def.type} value={def.type}>{def.label}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
           <Section className="py-16 sm:py-24">
-            <div className="mx-auto max-w-2xl space-y-10">
-              {blocks
-                .filter((b) => b.id !== 'about-hero-title' && b.id !== 'about-hero-body')
-                .sort((a, b) => a.order - b.order)
-                .map((block) => (
-                  <div key={block.id} className="relative">
-                    <button
-                      type="button"
-                      onClick={() => removeBlock('about', block.id, setAbout, aboutSha, 'content/about.json')}
-                      className="absolute -top-2 -right-2 rounded-full bg-destructive/10 p-1 text-xs text-destructive hover:bg-destructive/20"
-                      disabled={saving}
-                    >
-                      ×
-                    </button>
-                    <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveAbout({ [updated.id]: updated })} saving={saving} />
-                  </div>
-                ))}
+            <div className="mx-auto max-w-2xl">
+              <BlockEditor
+                blocks={blocks.filter((b) => b.id !== 'about-hero-title' && b.id !== 'about-hero-body')}
+                onSaveBlocks={(newBlocks) => saveAbout({ blocks: newBlocks })}
+                saving={saving}
+              />
             </div>
           </Section>
         </div>
@@ -643,14 +612,18 @@ export default function AdminPreviewPage() {
             <div className="relative mx-auto max-w-2xl">
               <PageTitle>{site.home_title || site.title || 'd3f4lt0'}</PageTitle>
               <div className="mt-1 h-px w-12 bg-border/60" aria-hidden="true" />
-              <div className="mt-8 space-y-4">
-                {blocks
-                  .filter((b) => b.id.startsWith('home-tagline') || b.id.startsWith('home-subtagline'))
-                  .sort((a, b) => a.order - b.order)
-                  .map((block) => (
-                    <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveSite({ [updated.id]: updated })} saving={saving} />
-                  ))}
+
+              <div className="mt-8">
+                <BlockEditor
+                  blocks={blocks.filter((b) => b.id.startsWith('home-tagline') || b.id.startsWith('home-subtagline'))}
+                  onSaveBlocks={(newBlocks) => {
+                    const others = blocks.filter((b) => !b.id.startsWith('home-tagline') && !b.id.startsWith('home-subtagline'));
+                    saveSite({ blocks: [...others, ...newBlocks] });
+                  }}
+                  saving={saving}
+                />
               </div>
+
               <div className="mt-10 flex flex-wrap items-center gap-6">
                 <Link href="/projects" className="link-underline text-sm font-medium text-primary"><Editable value={site.nav_projects || 'Projects'} onSave={(val) => saveSite({ nav_projects: val })} as="span" saving={saving} /></Link>
                 <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
@@ -667,29 +640,33 @@ export default function AdminPreviewPage() {
 
               <div className="mt-8 border-l-2 border-sky-400/20 pl-6 sm:pl-8">
                 <div className="space-y-1">
-                  {blocks
-                    .filter((b) => b.id.startsWith('home-mode'))
-                    .sort((a, b) => a.order - b.order)
-                    .map((block) => (
-                      <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveSite({ [updated.id]: updated })} saving={saving} />
-                    ))}
+                  <BlockEditor
+                    blocks={blocks.filter((b) => b.id.startsWith('home-mode'))}
+                    onSaveBlocks={(newBlocks) => {
+                      const others = blocks.filter((b) => !b.id.startsWith('home-mode'));
+                      saveSite({ blocks: [...others, ...newBlocks] });
+                    }}
+                    saving={saving}
+                  />
                 </div>
               </div>
             </div>
           </Section>
 
           <div className="py-8 text-center">
-            {blocks
-              .filter((b) => b.id.startsWith('home-trade'))
-              .sort((a, b) => a.order - b.order)
-              .map((block) => (
-                <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveSite({ [updated.id]: updated })} saving={saving} />
-              ))}
+            <BlockEditor
+              blocks={blocks.filter((b) => b.id.startsWith('home-trade'))}
+              onSaveBlocks={(newBlocks) => {
+                const others = blocks.filter((b) => !b.id.startsWith('home-trade'));
+                saveSite({ blocks: [...others, ...newBlocks] });
+              }}
+              saving={saving}
+            />
           </div>
 
           <Section className="py-16 sm:py-24">
             <div className="mx-auto max-w-2xl">
-              <SectionHeader number="01" title={site.home_projects_section_title || 'Projects'} description={site.home_projects_section_description || site.projects_description || "Things I've built."} />
+              <SectionHeader number="01" title="Projects" description={site.projects_description || 'Things I\'ve built.'} />
             </div>
             <div className="mx-auto mt-12 max-w-2xl">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -724,7 +701,7 @@ export default function AdminPreviewPage() {
 
           <Section className="py-16 sm:py-24">
             <div className="mx-auto max-w-2xl">
-              <SectionHeader number="02" title={site.home_journal_section_title || 'Journal'} description={site.home_journal_section_description || site.journal_description || 'Recent notes and updates.'} />
+              <SectionHeader number="02" title="Journal" description={site.journal_description || 'Recent notes and updates.'} />
             </div>
             <div className="mx-auto mt-12 max-w-2xl">
               <div className="divide-y divide-border/60">
@@ -933,44 +910,13 @@ export default function AdminPreviewPage() {
           {error && <div className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">{error}</div>}
           {success && <div className="mb-6 rounded-md border border-primary/40 bg-primary/10 p-4 text-sm text-primary">{success}</div>}
 
-          <div className="mb-6">
-            <div className="flex items-center gap-3">
-              <label className="block text-sm font-medium">Add block:</label>
-              <select
-                onChange={(e) => {
-                  if (e.target.value) {
-                    addBlock('knowledge', setKnowledge, knowledgeSha, 'content/knowledge.json');
-                    e.target.value = '';
-                  }
-                }}
-                className="block w-full max-w-xs rounded-md border border-border bg-background px-3 py-2 text-sm"
-                disabled={saving}
-              >
-                <option value="">Select block type...</option>
-                {BLOCK_TYPES.map((def) => (
-                  <option key={def.type} value={def.type}>{def.label}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
           <Section className="py-16 sm:py-24">
-            <div className="mx-auto max-w-2xl space-y-10">
-              {blocks
-                .sort((a, b) => a.order - b.order)
-                .map((block) => (
-                  <div key={block.id} className="relative">
-                    <button
-                      type="button"
-                      onClick={() => removeBlock('knowledge', block.id, setKnowledge, knowledgeSha, 'content/knowledge.json')}
-                      className="absolute -top-2 -right-2 rounded-full bg-destructive/10 p-1 text-xs text-destructive hover:bg-destructive/20"
-                      disabled={saving}
-                    >
-                      ×
-                    </button>
-                    <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveKnowledge({ [updated.id]: updated })} saving={saving} />
-                  </div>
-                ))}
+            <div className="mx-auto max-w-2xl">
+              <BlockEditor
+                blocks={blocks}
+                onSaveBlocks={(newBlocks) => saveKnowledge({ blocks: newBlocks })}
+                saving={saving}
+              />
             </div>
           </Section>
         </div>
