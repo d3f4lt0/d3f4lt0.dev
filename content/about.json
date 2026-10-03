@@ -18,5 +18,17 @@
     { "date": "2026-07-20", "title": "v1.5.1", "summary": "Network reliability patch. Exponential backoff and retry logic added." },
     { "date": "2026-07-21", "title": "v1.5.2", "summary": "Portfolio valuation restored. Statistics synchronization fixed." },
     { "date": "2026-07-23", "title": "Design System", "summary": "Public website and documentation structure finalized." }
+  ],
+  "blocks": [
+    { "id": "about-hero-title", "type": "title", "text": "Building software one system at a time.", "order": 0 },
+    { "id": "about-hero-body", "type": "text", "content": "This website documents projects, technical decisions, and experiments built with an architecture-first mindset. Every project is treated as a long-term system designed to remain understandable, maintainable, and continuously improved.", "order": 1 },
+    { "id": "about-title", "type": "title", "text": "Philosophy", "order": 2 },
+    { "id": "about-philosophy-1", "type": "text", "content": "Good software is rarely the result of writing more code. It comes from making better decisions before the first line is written.", "order": 3 },
+    { "id": "about-philosophy-2", "type": "text", "content": "One must imagine d3f4lt happy pushing code into the void.", "order": 4 },
+    { "id": "about-outside-title", "type": "title", "text": "Outside of programming", "order": 5 },
+    { "id": "about-outside", "type": "text", "content": "When I am not building something, I am usually reading, playing osu!, or exploring random ideas that catch my attention.", "order": 6 },
+    { "id": "about-contact-title", "type": "title", "text": "Contact", "order": 7 },
+    { "id": "about-contact-intro", "type": "text", "content": "For direct communication or collaboration inquiries.", "order": 8 },
+    { "id": "about-contact-cards", "type": "contacts", "content": "[{\"label\":\"GitHub\",\"href\":\"https://github.com/d3f4lt0\",\"external\":true},{\"label\":\"Instagram\",\"href\":\"https://instagram.com/d3f4lt0\",\"external\":true},{\"label\":\"osu!\",\"href\":\"https://osu.ppy.sh/users/39891012\",\"external\":true},{\"label\":\"Discord\",\"href\":\"https://discord.com/users/1264846495555784736\",\"external\":true},{\"label\":\"Email\",\"href\":\"mailto:d3f4lt0@proton.me\",\"external\":false}]", "order": 9 }
   ]
 }

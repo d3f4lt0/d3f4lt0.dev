@@ -53,5 +53,13 @@
   "home_projects_section_title": "Projects",
   "home_projects_section_description": "Things I've built.",
   "home_journal_section_title": "Journal",
-  "home_journal_section_description": "Recent notes and updates."
+  "home_journal_section_description": "Recent notes and updates.",
+  "blocks": [
+    { "id": "home-tagline", "type": "text", "text": "I like building things that outlive my motivation.", "order": 0 },
+    { "id": "home-subtagline", "type": "text", "content": "One must imagine d3f4lt happy pushing code into the void.", "order": 1 },
+    { "id": "home-mode-label", "type": "title", "text": "Current mode", "order": 2 },
+    { "id": "home-mode-status", "type": "text", "content": "Dopamine Detox", "order": 3 },
+    { "id": "home-mode-body", "type": "text", "content": "Most accounts are intentionally offline for now. If something genuinely urgent needs my attention, email is the best way to reach me.", "order": 4 },
+    { "id": "home-trade-line", "type": "text", "content": "Looking for trade calls? Keep looking.", "order": 5 }
+  ]
 }

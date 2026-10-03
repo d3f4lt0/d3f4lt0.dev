@@ -9,6 +9,7 @@ import { Tag } from '@/components/ui/tag';
 import { TimelineItem } from '@/components/ui/timeline-item';
 import { PageTitle } from '@/components/site/page-title';
 import { AngelWings } from '@/components/site/angel-wings';
+import { BlockRenderer, Block } from '@/components/admin/block-renderer';
 import { getProjects, getJournalEntries, getSiteSettings } from '@/lib/content';
 
 export const metadata: Metadata = {
@@ -32,6 +33,7 @@ export default async function HomePage() {
   const projects = getProjects();
   const journalEntries = getJournalEntries().slice(0, 3);
   const settings = getSiteSettings();
+  const blocks = (settings.blocks || []) as Block[];
 
   return (
     <div className="page-fade-in">
@@ -52,12 +54,14 @@ export default async function HomePage() {
         <div className="relative mx-auto max-w-2xl">
           <PageTitle>{settings.home_title || 'd3f4lt0'}</PageTitle>
           <div className="mt-1 h-px w-12 bg-border/60" aria-hidden="true" />
-          <p className="mt-8 text-lg leading-7 text-foreground/80 text-balance">
-            {settings.home_tagline || 'I like building things that outlive my motivation.'}
-          </p>
-          <p className="mt-4 text-sm leading-6 text-muted-foreground/75">
-            {settings.subtagline || 'One must imagine d3f4lt happy pushing code into the void.'}
-          </p>
+          <div className="mt-8 space-y-4">
+            {blocks
+              .filter((b) => b.id.startsWith('home-tagline') || b.id.startsWith('home-subtagline'))
+              .sort((a, b) => a.order - b.order)
+              .map((block) => (
+                <BlockRenderer key={block.id} block={block} />
+              ))}
+          </div>
           <div className="mt-10 flex flex-wrap items-center gap-6">
             <Link
               href="/projects"
@@ -105,22 +109,26 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-8 border-l-2 border-sky-400/20 pl-6 sm:pl-8">
-            <p className="text-xs font-mono text-sky-400/70">{settings.mode_label || 'Current mode'}</p>
-            <p className="mt-1 text-sm font-medium text-foreground/80">{settings.mode_status || 'Dopamine Detox'}</p>
-            <p className="mt-1 text-sm text-muted-foreground/75">
-              {settings.mode_body || 'Most accounts are intentionally offline for now. If something genuinely urgent needs my attention, '}
-              <a href="mailto:d3f4lt0@proton.me" className="link-underline text-foreground/75">
-                {settings.mode_email_label || 'email'}
-              </a>{' '}
-              is the best way to reach me.
-            </p>
+            <div className="space-y-1">
+              {blocks
+                .filter((b) => b.id.startsWith('home-mode'))
+                .sort((a, b) => a.order - b.order)
+                .map((block) => (
+                  <BlockRenderer key={block.id} block={block} />
+                ))}
+            </div>
           </div>
         </div>
       </Section>
 
-      <p className="py-8 text-center text-sm font-semibold text-muted-foreground/60">
-        {settings.trade_line || 'Looking for trade calls? Keep looking.'}
-      </p>
+      <div className="py-8 text-center">
+        {blocks
+          .filter((b) => b.id.startsWith('home-trade'))
+          .sort((a, b) => a.order - b.order)
+          .map((block) => (
+            <BlockRenderer key={block.id} block={block} />
+          ))}
+      </div>
 
       <Section className="py-16 sm:py-24">
         <div className="mx-auto max-w-2xl">

@@ -10,6 +10,7 @@ import { PageTitle } from '@/components/site/page-title';
 import { Tag } from '@/components/ui/tag';
 import { TimelineItem } from '@/components/ui/timeline-item';
 import { Editable } from '@/components/admin/editable';
+import { BlockRenderer, Block } from '@/components/admin/block-renderer';
 
 type PageSlug = 'home' | 'now' | 'projects' | 'journal' | 'settings' | 'about' | 'knowledge' | 'docs' | 'docs-architecture' | '404' | 'header' | 'footer';
 
@@ -422,6 +423,8 @@ export default function AdminPreviewPage() {
 
   if (page === 'about' && about) {
     const contacts = about.contacts || [];
+    const blocks = (about.blocks || []) as Block[];
+
     return (
       <div className="min-h-screen px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
@@ -444,44 +447,13 @@ export default function AdminPreviewPage() {
           </Section>
 
           <Section className="py-16 sm:py-24">
-            <div className="mx-auto max-w-2xl">
-              <SectionHeader number="01" title="Philosophy" />
-              <div className="mt-6 space-y-5 text-base leading-7 text-muted-foreground">
-                <Editable value={about.philosophy_1 || ''} onSave={(val) => saveAbout({ philosophy_1: val })} className="text-base leading-7 text-muted-foreground" as="p" saving={saving} />
-                <Editable value={about.philosophy_2 || ''} onSave={(val) => saveAbout({ philosophy_2: val })} className="italic text-muted-foreground/75" as="p" saving={saving} />
-              </div>
-            </div>
-          </Section>
-
-          <Section className="py-16 sm:py-24">
-            <div className="mx-auto max-w-2xl">
-              <SectionHeader number="02" title="Outside of programming" />
-              <div className="mt-6 space-y-5 text-base leading-7 text-muted-foreground">
-                <Editable value={about.outside || ''} onSave={(val) => saveAbout({ outside: val })} className="text-base leading-7 text-muted-foreground" as="p" saving={saving} />
-              </div>
-            </div>
-          </Section>
-
-          <Section className="py-16 sm:py-24" id="contact">
-            <div className="mx-auto max-w-2xl">
-              <SectionHeader number="03" title="Contact" />
-              <p className="mt-4 text-base text-muted-foreground">{about.contact_intro}</p>
-            </div>
-            <div className="mx-auto mt-12 max-w-2xl">
-              <div className="grid gap-3">
-                {contacts.map((item: any) => (
-                  <Link key={item.label} href={item.href} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener noreferrer' : undefined} className="group block">
-                    <Card className="card-hover-lift border-border/60 bg-card/50 backdrop-blur-sm">
-                      <CardContent className="p-4">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4">
-                          <span className="text-sm font-medium text-foreground/80">{item.label}</span>
-                          <span className="text-xs text-muted-foreground/70 break-all sm:break-normal">{item.href}</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
+            <div className="mx-auto max-w-2xl space-y-10">
+              {blocks
+                .filter((b) => b.id !== 'about-hero-title' && b.id !== 'about-hero-body')
+                .sort((a, b) => a.order - b.order)
+                .map((block) => (
+                  <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveAbout({ [updated.id]: updated })} saving={saving} />
                 ))}
-              </div>
             </div>
           </Section>
         </div>
@@ -608,6 +580,8 @@ export default function AdminPreviewPage() {
   }
 
   if (page === 'home' && site) {
+    const blocks = (site.blocks || []) as Block[];
+
     return (
       <div className="min-h-screen px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
@@ -627,8 +601,14 @@ export default function AdminPreviewPage() {
             <div className="relative mx-auto max-w-2xl">
               <PageTitle>{site.home_title || site.title || 'd3f4lt0'}</PageTitle>
               <div className="mt-1 h-px w-12 bg-border/60" aria-hidden="true" />
-              <Editable value={site.home_tagline || site.tagline} onSave={(val) => saveSite({ home_tagline: val })} className="mt-8 text-lg leading-7 text-foreground/80 text-balance" as="p" saving={saving} />
-              <Editable value={site.subtagline} onSave={(val) => saveSite({ subtagline: val })} className="mt-4 text-sm leading-6 text-muted-foreground/75" as="p" saving={saving} />
+              <div className="mt-8 space-y-4">
+                {blocks
+                  .filter((b) => b.id.startsWith('home-tagline') || b.id.startsWith('home-subtagline'))
+                  .sort((a, b) => a.order - b.order)
+                  .map((block) => (
+                    <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveSite({ [updated.id]: updated })} saving={saving} />
+                  ))}
+              </div>
               <div className="mt-10 flex flex-wrap items-center gap-6">
                 <Link href="/projects" className="link-underline text-sm font-medium text-primary">{site.nav_projects || 'Projects'}</Link>
                 <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
@@ -644,19 +624,26 @@ export default function AdminPreviewPage() {
               </div>
 
               <div className="mt-8 border-l-2 border-sky-400/20 pl-6 sm:pl-8">
-                <p className="text-xs font-mono text-sky-400/70">{site.mode_label || 'Current mode'}</p>
-                <p className="mt-1 text-sm font-medium text-foreground/80">{site.mode_status || 'Dopamine Detox'}</p>
-                <p className="mt-1 text-sm text-muted-foreground/75">
-                  {site.mode_body || 'Most accounts are intentionally offline for now. If something genuinely urgent needs my attention, '}
-                  <a href="mailto:d3f4lt0@proton.me" className="link-underline text-foreground/75">{site.mode_email_label || 'email'}</a> is the best way to reach me.
-                </p>
+                <div className="space-y-1">
+                  {blocks
+                    .filter((b) => b.id.startsWith('home-mode'))
+                    .sort((a, b) => a.order - b.order)
+                    .map((block) => (
+                      <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveSite({ [updated.id]: updated })} saving={saving} />
+                    ))}
+                </div>
               </div>
             </div>
           </Section>
 
-          <p className="py-8 text-center text-sm font-semibold text-muted-foreground/60">
-            <Editable value={site.trade_line} onSave={(val) => saveSite({ trade_line: val })} as="span" saving={saving} />
-          </p>
+          <div className="py-8 text-center">
+            {blocks
+              .filter((b) => b.id.startsWith('home-trade'))
+              .sort((a, b) => a.order - b.order)
+              .map((block) => (
+                <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveSite({ [updated.id]: updated })} saving={saving} />
+              ))}
+          </div>
 
           <Section className="py-16 sm:py-24">
             <div className="mx-auto max-w-2xl">
@@ -896,9 +883,7 @@ export default function AdminPreviewPage() {
   }
 
   if (page === 'knowledge' && knowledge) {
-    const interests = (knowledge.interests || []) as { title: string; description: string }[];
-    const learning = (knowledge.learning || []) as { title: string; context: string }[];
-    const workingStyle = (knowledge.working_style || []) as string[];
+    const blocks = (knowledge.blocks || []) as Block[];
 
     return (
       <div className="min-h-screen px-4 py-16 sm:px-6 lg:px-8">
@@ -914,83 +899,13 @@ export default function AdminPreviewPage() {
           {error && <div className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">{error}</div>}
           {success && <div className="mb-6 rounded-md border border-primary/40 bg-primary/10 p-4 text-sm text-primary">{success}</div>}
 
-          <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
-            <div className="mx-auto max-w-2xl">
-              <PageTitle>{knowledge.title || 'Knowledge'}</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{knowledge.description || 'Technical interests, current learning areas, and engineering approach.'}</p>
-            </div>
-          </Section>
-
           <Section className="py-16 sm:py-24">
-            <div className="mx-auto max-w-2xl">
-              <SectionHeader number="01" title={knowledge.interests_title || 'Interests'} description={knowledge.interests_description || 'Areas I return to repeatedly.'} />
-            </div>
-            <div className="mx-auto mt-12 max-w-2xl">
-              <div className="grid gap-3">
-                {interests.map((item, index) => (
-                  <Card key={item.title} className="card-hover-lift border-border/60 bg-card/50 backdrop-blur-sm">
-                    <CardContent className="p-6">
-                      <h3 className="text-base font-medium text-foreground/80">{item.title}</h3>
-                      <p className="mt-2 text-sm text-muted-foreground leading-6">{item.description}</p>
-                    </CardContent>
-                  </Card>
+            <div className="mx-auto max-w-2xl space-y-10">
+              {blocks
+                .sort((a, b) => a.order - b.order)
+                .map((block) => (
+                  <BlockRenderer key={block.id} block={block} editing onSave={(updated) => saveKnowledge({ [updated.id]: updated })} saving={saving} />
                 ))}
-              </div>
-            </div>
-          </Section>
-
-          <Section className="py-16 sm:py-24">
-            <div className="mx-auto max-w-2xl">
-              <SectionHeader number="02" title={knowledge.learning_title || 'Learning'} description={knowledge.learning_description || 'What I am studying right now.'} />
-            </div>
-            <div className="mx-auto mt-12 max-w-2xl">
-              <div className="grid gap-3">
-                {learning.map((item, index) => (
-                  <Card key={item.title} className="card-hover-lift border-border/60 bg-card/50 backdrop-blur-sm">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-3">
-                        <h3 className="text-base font-medium text-foreground/80">{item.title}</h3>
-                        <Tag>learning</Tag>
-                      </div>
-                      <p className="mt-2 text-sm text-muted-foreground leading-6">{item.context}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </Section>
-
-          <Section className="py-16 sm:py-24">
-            <div className="mx-auto max-w-2xl">
-              <SectionHeader number="03" title={knowledge.stack_title || 'Stack'} description={knowledge.stack_description || 'Tools and languages I use regularly.'} />
-            </div>
-            <div className="mx-auto mt-12 max-w-2xl space-y-6">
-              {Object.entries(knowledge.stack || {}).map(([category, items]) => (
-                <div key={category}>
-                  <h3 className="text-xs font-medium text-muted-foreground/50 uppercase tracking-wider mb-3">{category}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {(items as string[]).map((item) => (
-                      <Tag key={item}>{item}</Tag>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Section>
-
-          <Section className="py-16 sm:py-24">
-            <div className="mx-auto max-w-2xl">
-              <SectionHeader number="04" title={knowledge.working_style_title || 'Working Style'} description={knowledge.working_style_description || 'Principles that shape how I build.'} />
-            </div>
-            <div className="mx-auto mt-12 max-w-2xl">
-              <div className="grid gap-3">
-                {workingStyle.map((item, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30" aria-hidden="true" />
-                    <span className="text-sm text-muted-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
             </div>
           </Section>
         </div>

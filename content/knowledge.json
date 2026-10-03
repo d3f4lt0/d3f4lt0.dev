@@ -36,5 +36,21 @@
     "Test behavior, not implementation.",
     "Iterate on architecture, not features."
   ],
-  "view_archive": "View archive"
+  "view_archive": "View archive",
+  "blocks": [
+    { "id": "knowledge-title", "type": "title", "text": "Knowledge", "order": 0 },
+    { "id": "knowledge-description", "type": "text", "content": "Technical interests, current learning areas, and engineering approach.", "order": 1 },
+    { "id": "knowledge-interests-title", "type": "title", "text": "Interests", "order": 2 },
+    { "id": "knowledge-interests-description", "type": "text", "content": "Areas I return to repeatedly.", "order": 3 },
+    { "id": "knowledge-interests-content", "type": "interests", "content": "[\"Distributed systems|Designing services that remain understandable under failure.\",\"Type safety|Moving correctness left through types, schemas, and compile-time guarantees.\",\"Observability|Logging, metrics, and traces as first-class concerns, not afterthoughts.\",\"Trading infrastructure|Market data pipelines, execution systems, and risk-aware decision layers.\"]", "order": 4 },
+    { "id": "knowledge-learning-title", "type": "title", "text": "Learning", "order": 5 },
+    { "id": "knowledge-learning-description", "type": "text", "content": "What I am studying right now.", "order": 6 },
+    { "id": "knowledge-learning-content", "type": "learning", "content": "[\"Rust|Exploring memory-safe systems programming for performance-critical components.\",\"SQL optimization|Query planning, indexing strategies, and schema evolution at scale.\",\"WebAssembly|Running compute-heavy logic close to the edge without leaving the browser.\",\"Formal methods|Lightweight correctness proofs and property-based testing in Python.\"]", "order": 7 },
+    { "id": "knowledge-stack-title", "type": "title", "text": "Stack", "order": 8 },
+    { "id": "knowledge-stack-description", "type": "text", "content": "Tools and languages I use regularly.", "order": 9 },
+    { "id": "knowledge-stack-content", "type": "stack", "content": "{\"Languages\":[\"TypeScript\",\"Python\",\"Rust\",\"SQL\"],\"Frontend\":[\"Next.js\",\"React\",\"Tailwind CSS\"],\"Backend\":[\"FastAPI\",\"Node.js\",\"SQLite\",\"PostgreSQL\"],\"Infrastructure\":[\"Docker\",\"GitHub Actions\",\"Vercel\"],\"Tooling\":[\"ESLint\",\"Prettier\",\"Vitest\",\"Playwright\",\"Ruff\"]}", "order": 10 },
+    { "id": "knowledge-working-title", "type": "title", "text": "Working Style", "order": 11 },
+    { "id": "knowledge-working-description", "type": "text", "content": "Principles that shape how I build.", "order": 12 },
+    { "id": "knowledge-working-content", "type": "working-style", "content": "[\"Write decisions before code.\",\"Prefer boring technology.\",\"Keep interfaces small and explicit.\",\"Document why, not just what.\",\"Test behavior, not implementation.\",\"Iterate on architecture, not features.\"]", "order": 13 }
+  ]
 }
