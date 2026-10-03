@@ -5,7 +5,7 @@ import { SectionHeader } from '@/components/site/section-header';
 import { Card, CardContent } from '@/components/ui/card';
 import { PageTitle } from '@/components/site/page-title';
 import { TimelineItem } from '@/components/ui/timeline-item';
-import { getJournalEntries } from '@/lib/content';
+import { getJournalEntries, getSiteSettings } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'Journal',
@@ -26,6 +26,7 @@ export const metadata: Metadata = {
 
 export default async function JournalPage() {
   const journalEntries = getJournalEntries();
+  const settings = getSiteSettings();
 
   return (
     <div className="page-fade-in">
@@ -33,7 +34,7 @@ export default async function JournalPage() {
         <div className="mx-auto max-w-2xl">
           <PageTitle>Journal</PageTitle>
           <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">
-            Journal of decisions, milestones, and lessons learned.
+            {settings.journal_description || 'Journal of decisions, milestones, and lessons learned.'}
           </p>
         </div>
       </Section>

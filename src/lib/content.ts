@@ -63,3 +63,21 @@ export function getNowPage(): (NowPage & { content: string }) | null {
   const { data, content } = matter(fileContent);
   return { ...(data as NowPage), content };
 }
+
+export function getSiteSettings(): Record<string, any> {
+  const settingsPath = path.join(contentDir, 'settings', 'site.json');
+  if (!fs.existsSync(settingsPath)) {
+    return {};
+  }
+  const fileContent = fs.readFileSync(settingsPath, 'utf-8');
+  return JSON.parse(fileContent);
+}
+
+export function getAboutPage(): Record<string, any> {
+  const aboutPath = path.join(contentDir, 'about.json');
+  if (!fs.existsSync(aboutPath)) {
+    return {};
+  }
+  const fileContent = fs.readFileSync(aboutPath, 'utf-8');
+  return JSON.parse(fileContent);
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Section } from '@/components/site/section';
 import { SectionHeader } from '@/components/site/section-header';
@@ -52,13 +52,14 @@ export default function AdminPreviewPage() {
   const params = useParams();
   const page = (params?.page as PageSlug) || 'home';
   const origin = useOrigin();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const [site, setSite] = useState<{ title: string; tagline: string; subtagline: string; trade_line: string } | null>(null);
+  const [site, setSite] = useState<{ title: string; tagline: string; subtagline: string; trade_line: string; home_title?: string; home_tagline?: string; projects_description?: string; journal_description?: string; now_intro?: string; [key: string]: any } | null>(null);
   const [siteSha, setSiteSha] = useState<string | undefined>();
 
   const [now, setNow] = useState<{ title: string; updated: string; sections: { title: string; content: string }[] } | null>(null);
@@ -66,9 +67,14 @@ export default function AdminPreviewPage() {
 
   const [projects, setProjects] = useState<any[]>([]);
   const [projectsSha, setProjectsSha] = useState<Record<string, string | undefined>>({});
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
   const [journal, setJournal] = useState<any[]>([]);
   const [journalSha, setJournalSha] = useState<Record<string, string | undefined>>({});
+  const [selectedJournal, setSelectedJournal] = useState<string | null>(null);
+
+  const [about, setAbout] = useState<{ title: string; body: string; philosophy_1?: string; philosophy_2?: string; outside?: string; contact_intro?: string; [key: string]: any } | null>(null);
+  const [aboutSha, setAboutSha] = useState<string | undefined>();
 
   useEffect(() => {
     if (!origin) return;
@@ -124,6 +130,9 @@ export default function AdminPreviewPage() {
           );
           setProjects(entries);
           setProjectsSha(Object.fromEntries(entries.map((p: any) => [p.slug, p._sha])));
+          if (!selectedProject && entries.length > 0) {
+            setSelectedProject(entries[0].slug);
+          }
           setLoading(false);
         })
         .catch((err) => {
@@ -144,6 +153,20 @@ export default function AdminPreviewPage() {
           );
           setJournal(entries);
           setJournalSha(Object.fromEntries(entries.map((e: any) => [e._slug, e._sha])));
+          if (!selectedJournal && entries.length > 0) {
+            setSelectedJournal(entries[0]._slug);
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
+        });
+    } else if (page === 'about') {
+      apiGet(origin, 'content/about.json')
+        .then((data) => {
+          setAbout(JSON.parse(data.content));
+          setAboutSha(data.sha);
           setLoading(false);
         })
         .catch((err) => {
@@ -155,7 +178,7 @@ export default function AdminPreviewPage() {
     }
   }, [page, origin]);
 
-  const saveSite = async (patch: Partial<{ title: string; tagline: string; subtagline: string; trade_line: string }>) => {
+  const saveSite = async (patch: Record<string, any>) => {
     if (!origin || !site) return;
     setSaving(true);
     setError(null);
@@ -216,6 +239,48 @@ export default function AdminPreviewPage() {
     }
   };
 
+  const saveJournal = async (slug: string, patch: Record<string, any>) => {
+    if (!origin) return;
+    setSaving(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const entry = journal.find((e: any) => e._slug === slug);
+      if (!entry) return;
+      const updated = { ...entry, ...patch };
+      delete updated._sha;
+      delete updated._slug;
+      const matter = (await import('gray-matter')).default;
+      const fileContent = matter.stringify(updated.body || '', updated);
+      const res = await apiPost(origin, `content/journal/${slug}.md`, fileContent, journalSha[slug], `Update journal ${slug} via admin`);
+      setJournalSha((prev) => ({ ...prev, [slug]: res.commit ? undefined : prev[slug] }));
+      setSuccess('Saved. Vercel will auto-deploy shortly.');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const saveAbout = async (patch: Record<string, any>) => {
+    if (!origin || !about) return;
+    setSaving(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const updated = { ...about, ...patch };
+      setAbout(updated);
+      const content = JSON.stringify(updated, null, 2);
+      await apiPost(origin, 'content/about.json', content, aboutSha, 'Update about page via admin');
+      setAboutSha(undefined);
+      setSuccess('Saved. Vercel will auto-deploy shortly.');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   if (loading || !origin) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -224,21 +289,70 @@ export default function AdminPreviewPage() {
     );
   }
 
-  if (page === 'about') {
+  if (page === 'about' && about) {
+    const contacts = about.contacts || [];
     return (
       <div className="min-h-screen px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-medium tracking-tight">Admin - About</h1>
-              <p className="mt-1 text-sm text-muted-foreground">About page preview</p>
+              <p className="mt-1 text-sm text-muted-foreground">Click any editable text to modify it.</p>
             </div>
             <Link href="/admin" className="link-underline text-sm font-medium text-primary">&larr; Back to Admin</Link>
           </div>
-          <div className="rounded-md border border-border/60 bg-card/30 p-4">
-            <h3 className="text-sm font-medium text-foreground/80">Not yet editable</h3>
-            <p className="mt-1 text-sm text-muted-foreground/75">The About page is entirely hardcoded. To make it editable, move its text into a data source (e.g. content/about.md or site.json).</p>
-          </div>
+
+          {error && <div className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">{error}</div>}
+          {success && <div className="mb-6 rounded-md border border-primary/40 bg-primary/10 p-4 text-sm text-primary">{success}</div>}
+
+          <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
+            <div className="mx-auto max-w-2xl">
+              <PageTitle>{about.title}</PageTitle>
+              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{about.body}</p>
+            </div>
+          </Section>
+
+          <Section className="py-16 sm:py-24">
+            <div className="mx-auto max-w-2xl">
+              <SectionHeader number="01" title="Philosophy" />
+              <div className="mt-6 space-y-5 text-base leading-7 text-muted-foreground">
+                <Editable value={about.philosophy_1 || ''} onSave={(val) => saveAbout({ philosophy_1: val })} className="text-base leading-7 text-muted-foreground" as="p" saving={saving} />
+                <Editable value={about.philosophy_2 || ''} onSave={(val) => saveAbout({ philosophy_2: val })} className="italic text-muted-foreground/75" as="p" saving={saving} />
+              </div>
+            </div>
+          </Section>
+
+          <Section className="py-16 sm:py-24">
+            <div className="mx-auto max-w-2xl">
+              <SectionHeader number="02" title="Outside of programming" />
+              <div className="mt-6 space-y-5 text-base leading-7 text-muted-foreground">
+                <Editable value={about.outside || ''} onSave={(val) => saveAbout({ outside: val })} className="text-base leading-7 text-muted-foreground" as="p" saving={saving} />
+              </div>
+            </div>
+          </Section>
+
+          <Section className="py-16 sm:py-24" id="contact">
+            <div className="mx-auto max-w-2xl">
+              <SectionHeader number="03" title="Contact" />
+              <p className="mt-4 text-base text-muted-foreground">{about.contact_intro}</p>
+            </div>
+            <div className="mx-auto mt-12 max-w-2xl">
+              <div className="grid gap-3">
+                {contacts.map((item: any) => (
+                  <Link key={item.label} href={item.href} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener noreferrer' : undefined} className="group block">
+                    <Card className="card-hover-lift border-border/60 bg-card/50 backdrop-blur-sm">
+                      <CardContent className="p-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4">
+                          <span className="text-sm font-medium text-foreground/80">{item.label}</span>
+                          <span className="text-xs text-muted-foreground/70 break-all sm:break-normal">{item.href}</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </Section>
         </div>
       </div>
     );
@@ -335,7 +449,7 @@ export default function AdminPreviewPage() {
 
           <Section className="py-16 sm:py-24">
             <div className="mx-auto max-w-2xl">
-              <SectionHeader number="01" title="Projects" description="Things I've built." />
+              <SectionHeader number="01" title="Projects" description={site.projects_description || 'Things I\'ve built.'} />
             </div>
             <div className="mx-auto mt-12 max-w-2xl">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -370,7 +484,7 @@ export default function AdminPreviewPage() {
 
           <Section className="py-16 sm:py-24">
             <div className="mx-auto max-w-2xl">
-              <SectionHeader number="02" title="Journal" description="Recent notes and updates." />
+              <SectionHeader number="02" title="Journal" description={site.journal_description || 'Recent notes and updates.'} />
             </div>
             <div className="mx-auto mt-12 max-w-2xl">
               <div className="divide-y divide-border/60">
@@ -406,7 +520,7 @@ export default function AdminPreviewPage() {
           <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
             <div className="mx-auto max-w-2xl">
               <PageTitle>Now</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">A snapshot of current work, learning, and focus. Updated manually.</p>
+              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{site?.now_intro || 'A snapshot of current work, learning, and focus. Updated manually.'}</p>
               <p className="mt-2 text-xs text-muted-foreground/60">Last updated: <Editable value={now.updated} onSave={(val) => setNow({ ...now, updated: val })} as="span" saving={saving} /></p>
             </div>
           </Section>
@@ -438,14 +552,15 @@ export default function AdminPreviewPage() {
     );
   }
 
-  if (page === 'projects' && projects.length > 0) {
+  if (page === 'projects' && projects.length > 0 && selectedProject) {
+    const project = projects.find((p: any) => p.slug === selectedProject) || projects[0];
     return (
       <div className="min-h-screen px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-medium tracking-tight">Admin - Projects</h1>
-              <p className="mt-1 text-sm text-muted-foreground">Click any editable text to modify it.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Pick a project, then click text to edit.</p>
             </div>
             <Link href="/admin" className="link-underline text-sm font-medium text-primary">&larr; Back to Admin</Link>
           </div>
@@ -453,10 +568,19 @@ export default function AdminPreviewPage() {
           {error && <div className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">{error}</div>}
           {success && <div className="mb-6 rounded-md border border-primary/40 bg-primary/10 p-4 text-sm text-primary">{success}</div>}
 
+          <div className="mb-6">
+            <label className="block text-sm font-medium">Select project</label>
+            <select value={selectedProject} onChange={(e) => setSelectedProject(e.target.value)} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving}>
+              {projects.map((p: any) => (
+                <option key={p.slug} value={p.slug}>{p.title} ({p.slug})</option>
+              ))}
+            </select>
+          </div>
+
           <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
             <div className="mx-auto max-w-2xl">
               <PageTitle>Projects</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">Open-source tools and systems built for engineering problems.</p>
+              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{site?.projects_description || 'Open-source tools and systems built for engineering problems.'}</p>
             </div>
           </Section>
 
@@ -466,31 +590,29 @@ export default function AdminPreviewPage() {
             </div>
             <div className="mx-auto mt-12 max-w-2xl">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {projects.map((project) => (
-                  <div key={project.slug} className="group block">
-                    <Card className="card-hover-lift h-full border-border/60 bg-card/50 backdrop-blur-sm">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <Editable value={project.title} onSave={(val) => saveProject(project.slug, { title: val })} className="text-xl tracking-tight" as="h3" saving={saving} />
-                          <div className="flex items-center gap-2"><Tag>{project.status}</Tag></div>
+                <div className="group block">
+                  <Card className="card-hover-lift h-full border-border/60 bg-card/50 backdrop-blur-sm">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <Editable value={project.title} onSave={(val) => saveProject(project.slug, { title: val })} className="text-xl tracking-tight" as="h3" saving={saving} />
+                        <div className="flex items-center gap-2"><Tag>{project.status}</Tag></div>
+                      </div>
+                      <Editable value={project.description} onSave={(val) => saveProject(project.slug, { description: val })} className="leading-6" as="p" saving={saving} />
+                    </CardHeader>
+                    <CardContent>
+                      <Editable value={project.state} onSave={(val) => saveProject(project.slug, { state: val })} className="text-sm text-muted-foreground/80" as="p" saving={saving} />
+                      <div className="mt-3 flex flex-wrap items-center gap-4">
+                        <div className="flex flex-wrap gap-2">
+                          {project.tags.map((item: string) => <Tag key={item}>{item}</Tag>)}
                         </div>
-                        <Editable value={project.description} onSave={(val) => saveProject(project.slug, { description: val })} className="leading-6" as="p" saving={saving} />
-                      </CardHeader>
-                      <CardContent>
-                        <Editable value={project.state} onSave={(val) => saveProject(project.slug, { state: val })} className="text-sm text-muted-foreground/80" as="p" saving={saving} />
-                        <div className="mt-3 flex flex-wrap items-center gap-4">
-                          <div className="flex flex-wrap gap-2">
-                            {project.tags.map((item: string) => <Tag key={item}>{item}</Tag>)}
-                          </div>
-                        </div>
-                        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground/70">
-                          <span className="inline-flex items-center gap-1.5">{project.date}</span>
-                          {project.github && <span className="truncate">{project.github}</span>}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ))}
+                      </div>
+                      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground/70">
+                        <span className="inline-flex items-center gap-1.5">{project.date}</span>
+                        {project.github && <span className="truncate">{project.github}</span>}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
             </div>
           </Section>
@@ -499,14 +621,15 @@ export default function AdminPreviewPage() {
     );
   }
 
-  if (page === 'journal' && journal.length > 0) {
+  if (page === 'journal' && journal.length > 0 && selectedJournal) {
+    const entry = journal.find((e: any) => e._slug === selectedJournal) || journal[0];
     return (
       <div className="min-h-screen px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-medium tracking-tight">Admin - Journal</h1>
-              <p className="mt-1 text-sm text-muted-foreground">Click any editable text to modify it.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Pick an entry, then click text to edit.</p>
             </div>
             <Link href="/admin" className="link-underline text-sm font-medium text-primary">&larr; Back to Admin</Link>
           </div>
@@ -514,10 +637,19 @@ export default function AdminPreviewPage() {
           {error && <div className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">{error}</div>}
           {success && <div className="mb-6 rounded-md border border-primary/40 bg-primary/10 p-4 text-sm text-primary">{success}</div>}
 
+          <div className="mb-6">
+            <label className="block text-sm font-medium">Select entry</label>
+            <select value={selectedJournal} onChange={(e) => setSelectedJournal(e.target.value)} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm" disabled={saving}>
+              {journal.map((e: any) => (
+                <option key={e._slug} value={e._slug}>{e.date} — {e.title}</option>
+              ))}
+            </select>
+          </div>
+
           <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
             <div className="mx-auto max-w-2xl">
               <PageTitle>Journal</PageTitle>
-              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">Journal of decisions, milestones, and lessons learned.</p>
+              <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">{site?.journal_description || 'Journal of decisions, milestones, and lessons learned.'}</p>
             </div>
           </Section>
 
@@ -529,9 +661,16 @@ export default function AdminPreviewPage() {
               <Card className="border-border/60 bg-card/50 backdrop-blur-sm">
                 <CardContent className="p-0">
                   <div className="divide-y divide-border/60">
-                    {journal.map((entry) => (
-                      <TimelineItem key={entry.date + entry.title} date={entry.date} title={entry.title} summary={entry.summary} href={entry.href} lessonsLearned="" relatedProject={entry.relatedProject} relatedProjectHref={entry.relatedProjectHref} status={entry.status} />
-                    ))}
+                    <TimelineItem
+                      date={entry.date}
+                      title={entry.title}
+                      summary={entry.summary}
+                      href={entry.href}
+                      lessonsLearned=""
+                      relatedProject={entry.relatedProject}
+                      relatedProjectHref={entry.relatedProjectHref}
+                      status={entry.status}
+                    />
                   </div>
                 </CardContent>
               </Card>

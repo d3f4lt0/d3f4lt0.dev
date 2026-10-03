@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { Section } from '@/components/site/section';
 import { SectionHeader } from '@/components/site/section-header';
 import { PageTitle } from '@/components/site/page-title';
-import { getNowPage } from '@/lib/content';
+import { getNowPage, getSiteSettings } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'Now',
@@ -23,6 +23,7 @@ export const metadata: Metadata = {
 
 export default async function NowPage() {
   const nowPage = getNowPage();
+  const settings = getSiteSettings();
 
   if (!nowPage) {
     return null;
@@ -40,7 +41,7 @@ export default async function NowPage() {
         <div className="mx-auto max-w-2xl">
           <PageTitle>Now</PageTitle>
           <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">
-            A snapshot of current work, learning, and focus. Updated manually.
+            {settings.now_intro || 'A snapshot of current work, learning, and focus. Updated manually.'}
           </p>
           <p className="mt-2 text-xs text-muted-foreground/60">
             Last updated: {nowPage.updated}

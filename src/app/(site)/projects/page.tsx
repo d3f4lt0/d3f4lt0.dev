@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { StatusBadge } from '@/components/ui/badge';
 import { Tag } from '@/components/ui/tag';
 import { PageTitle } from '@/components/site/page-title';
-import { getProjects } from '@/lib/content';
+import { getProjects, getSiteSettings } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -28,6 +28,7 @@ export const metadata: Metadata = {
 
 export default async function ProjectsPage() {
   const projects = getProjects();
+  const settings = getSiteSettings();
 
   return (
     <div className="page-fade-in">
@@ -35,7 +36,7 @@ export default async function ProjectsPage() {
         <div className="mx-auto max-w-2xl">
           <PageTitle>Projects</PageTitle>
           <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">
-            Open-source tools and systems built for engineering problems.
+            {settings.projects_description || 'Open-source tools and systems built for engineering problems.'}
           </p>
         </div>
       </Section>
