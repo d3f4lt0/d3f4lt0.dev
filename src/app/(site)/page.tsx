@@ -63,21 +63,21 @@ export default async function HomePage() {
               href="/projects"
               className="link-underline text-sm font-medium text-primary"
             >
-              Projects
+              {settings.nav_projects || 'Projects'}
             </Link>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <Link
               href="/journal"
               className="link-underline text-sm font-medium text-primary"
             >
-              Journal
+              {settings.nav_journal || 'Journal'}
             </Link>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <Link
               href="/knowledge"
               className="link-underline text-sm font-medium text-primary"
             >
-              Knowledge
+              {settings.nav_knowledge || 'Knowledge'}
             </Link>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <a
@@ -93,7 +93,7 @@ export default async function HomePage() {
               href="/now"
               className="link-underline text-sm font-medium text-primary"
             >
-              Now
+              {settings.nav_now || 'Now'}
             </Link>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/30" aria-hidden="true" />
             <Link
@@ -105,12 +105,12 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-8 border-l-2 border-sky-400/20 pl-6 sm:pl-8">
-            <p className="text-xs font-mono text-sky-400/70">Current mode</p>
-            <p className="mt-1 text-sm font-medium text-foreground/80">Dopamine Detox</p>
+            <p className="text-xs font-mono text-sky-400/70">{settings.mode_label || 'Current mode'}</p>
+            <p className="mt-1 text-sm font-medium text-foreground/80">{settings.mode_status || 'Dopamine Detox'}</p>
             <p className="mt-1 text-sm text-muted-foreground/75">
-              Most accounts are intentionally offline for now. If something genuinely urgent needs my attention,{' '}
+              {settings.mode_body || 'Most accounts are intentionally offline for now. If something genuinely urgent needs my attention, '}
               <a href="mailto:d3f4lt0@proton.me" className="link-underline text-foreground/75">
-                email
+                {settings.mode_email_label || 'email'}
               </a>{' '}
               is the best way to reach me.
             </p>
@@ -126,8 +126,8 @@ export default async function HomePage() {
         <div className="mx-auto max-w-2xl">
           <SectionHeader
             number="01"
-            title="Projects"
-            description={settings.projects_description || 'Things I\'ve built.'}
+            title={settings.home_projects_section_title || 'Projects'}
+            description={settings.home_projects_section_description || settings.projects_description || "Things I've built."}
           />
         </div>
         <div className="mx-auto mt-12 max-w-2xl">
@@ -163,7 +163,7 @@ export default async function HomePage() {
                       )}
                     </div>
                     <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary/80 transition-colors duration-150 ease-out group-hover:text-primary">
-                      <span className="link-underline">View project</span>
+                      <span className="link-underline">{settings.view_project || 'View project'}</span>
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
                   </CardContent>
@@ -178,8 +178,8 @@ export default async function HomePage() {
         <div className="mx-auto max-w-2xl">
           <SectionHeader
             number="02"
-            title="Journal"
-            description={settings.journal_description || 'Recent notes and updates.'}
+            title={settings.home_journal_section_title || 'Journal'}
+            description={settings.home_journal_section_description || settings.journal_description || 'Recent notes and updates.'}
           />
         </div>
         <div className="mx-auto mt-12 max-w-2xl">
@@ -199,7 +199,7 @@ export default async function HomePage() {
               href="/journal"
               className="link-underline text-sm font-medium text-primary"
             >
-              View all entries
+              {settings.view_all_journal || 'View all entries'}
             </Link>
           </div>
         </div>

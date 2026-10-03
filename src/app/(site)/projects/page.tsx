@@ -36,7 +36,7 @@ export default async function ProjectsPage() {
         <div className="mx-auto max-w-2xl">
           <PageTitle>Projects</PageTitle>
           <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">
-            {settings.projects_description || 'Open-source tools and systems built for engineering problems.'}
+            {settings.projects_description || 'Things I\'ve built.'}
           </p>
         </div>
       </Section>
@@ -45,8 +45,8 @@ export default async function ProjectsPage() {
         <div className="mx-auto max-w-2xl">
           <SectionHeader
             number="01"
-            title="All Projects"
-            description="Each project is a self-contained engineering effort with its own documentation, changelog, and architecture."
+            title={settings.projects_section_title || 'All Projects'}
+            description={settings.projects_section_description || 'Each project is a self-contained engineering effort with its own documentation, changelog, and architecture.'}
           />
         </div>
         <div className="mx-auto mt-12 max-w-2xl">
@@ -82,7 +82,7 @@ export default async function ProjectsPage() {
                       )}
                     </div>
                     <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary/80 transition-colors duration-150 ease-out group-hover:text-primary">
-                      <span className="link-underline">View project</span>
+                      <span className="link-underline">{settings.view_project || 'View project'}</span>
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
                   </CardContent>

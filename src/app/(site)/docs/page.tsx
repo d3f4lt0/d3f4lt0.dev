@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Section } from '@/components/site/section';
 import { SectionHeader } from '@/components/site/section-header';
 import { PageTitle } from '@/components/site/page-title';
+import { getDocsPage } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'Documentation',
@@ -22,13 +23,15 @@ export const metadata: Metadata = {
 };
 
 export default function DocsPage() {
+  const docs = getDocsPage();
+
   return (
     <div className="page-fade-in">
       <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
         <div className="mx-auto max-w-2xl">
-          <PageTitle>Documentation</PageTitle>
+          <PageTitle>{docs.title || 'Documentation'}</PageTitle>
           <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">
-            Architecture and design documentation.
+            {docs.description || 'Architecture and design documentation.'}
           </p>
         </div>
       </Section>
@@ -37,15 +40,15 @@ export default function DocsPage() {
         <div className="mx-auto max-w-2xl">
           <SectionHeader
             number="01"
-            title="Architecture"
-            description="System design, data flow, and component interactions."
+            title={docs.architecture_title || 'Architecture'}
+            description={docs.architecture_description || 'System design, data flow, and component interactions.'}
           />
           <div className="mt-6">
             <Link
               href="/docs/architecture"
               className="link-underline text-sm font-medium text-primary"
             >
-              View architecture documentation
+              {docs.view_architecture || 'View architecture documentation'}
             </Link>
           </div>
         </div>

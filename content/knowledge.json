@@ -1,0 +1,40 @@
+{
+  "title": "Knowledge",
+  "description": "Technical interests, current learning areas, and engineering approach.",
+  "interests_title": "Interests",
+  "interests_description": "Areas I return to repeatedly.",
+  "interests": [
+    { "title": "Distributed systems", "description": "Designing services that remain understandable under failure." },
+    { "title": "Type safety", "description": "Moving correctness left through types, schemas, and compile-time guarantees." },
+    { "title": "Observability", "description": "Logging, metrics, and traces as first-class concerns, not afterthoughts." },
+    { "title": "Trading infrastructure", "description": "Market data pipelines, execution systems, and risk-aware decision layers." }
+  ],
+  "learning_title": "Learning",
+  "learning_description": "What I am studying right now.",
+  "learning": [
+    { "title": "Rust", "context": "Exploring memory-safe systems programming for performance-critical components." },
+    { "title": "SQL optimization", "context": "Query planning, indexing strategies, and schema evolution at scale." },
+    { "title": "WebAssembly", "context": "Running compute-heavy logic close to the edge without leaving the browser." },
+    { "title": "Formal methods", "context": "Lightweight correctness proofs and property-based testing in Python." }
+  ],
+  "stack_title": "Stack",
+  "stack_description": "Tools and languages I use regularly.",
+  "stack": {
+    "Languages": ["TypeScript", "Python", "Rust", "SQL"],
+    "Frontend": ["Next.js", "React", "Tailwind CSS"],
+    "Backend": ["FastAPI", "Node.js", "SQLite", "PostgreSQL"],
+    "Infrastructure": ["Docker", "GitHub Actions", "Vercel"],
+    "Tooling": ["ESLint", "Prettier", "Vitest", "Playwright", "Ruff"]
+  },
+  "working_style_title": "Working Style",
+  "working_style_description": "Principles that shape how I build.",
+  "working_style": [
+    "Write decisions before code.",
+    "Prefer boring technology.",
+    "Keep interfaces small and explicit.",
+    "Document why, not just what.",
+    "Test behavior, not implementation.",
+    "Iterate on architecture, not features."
+  ],
+  "view_archive": "View archive"
+}

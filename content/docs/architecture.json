@@ -1,0 +1,10 @@
+{
+  "title": "Architecture",
+  "description": "System design, data flow, and component interactions.",
+  "overview_title": "Overview",
+  "overview_paragraphs": [
+    "Documentation is in progress. This page will contain architecture diagrams, data flow descriptions, and component interaction details.",
+    "For now, the best source of truth is the project repositories and the journal."
+  ],
+  "back_to_docs": "Back to documentation"
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Documentation",
+  "description": "Architecture and design documentation.",
+  "architecture_title": "Architecture",
+  "architecture_description": "System design, data flow, and component interactions.",
+  "view_architecture": "View architecture documentation"
+}

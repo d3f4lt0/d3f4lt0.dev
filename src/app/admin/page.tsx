@@ -8,6 +8,13 @@ const pages = [
   { href: '/admin/preview/projects', label: 'Projects', description: 'Project cards and metadata' },
   { href: '/admin/preview/journal', label: 'Journal', description: 'Journal entries and summaries' },
   { href: '/admin/preview/settings', label: 'Settings', description: 'Site title, taglines, metadata' },
+  { href: '/admin/preview/about', label: 'About', description: 'About page content' },
+  { href: '/admin/preview/knowledge', label: 'Knowledge', description: 'Knowledge page content' },
+  { href: '/admin/preview/docs', label: 'Docs', description: 'Documentation page content' },
+  { href: '/admin/preview/docs-architecture', label: 'Docs Architecture', description: 'Architecture documentation content' },
+  { href: '/admin/preview/404', label: '404', description: 'Not found page content' },
+  { href: '/admin/preview/header', label: 'Header', description: 'Navigation labels and brand' },
+  { href: '/admin/preview/footer', label: 'Footer', description: 'Footer links and brand' },
 ];
 
 export default function AdminPage() {
@@ -45,13 +52,6 @@ export default function AdminPage() {
               </div>
             </Link>
           ))}
-        </div>
-
-        <div className="mt-8 rounded-md border border-border/60 bg-card/30 p-4">
-          <h3 className="text-sm font-medium text-foreground/80">Hardcoded pages (not yet editable)</h3>
-          <p className="mt-1 text-sm text-muted-foreground/75">
-            The About page is currently entirely hardcoded. To make it editable, its text would need to be moved into a data source (e.g. a markdown file or site.json).
-          </p>
         </div>
       </div>
     </div>

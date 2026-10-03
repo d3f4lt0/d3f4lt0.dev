@@ -34,7 +34,7 @@ export default async function JournalPage() {
         <div className="mx-auto max-w-2xl">
           <PageTitle>Journal</PageTitle>
           <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">
-            {settings.journal_description || 'Journal of decisions, milestones, and lessons learned.'}
+            {settings.journal_description || 'Recent notes and updates.'}
           </p>
         </div>
       </Section>
@@ -43,8 +43,8 @@ export default async function JournalPage() {
         <div className="mx-auto max-w-2xl">
           <SectionHeader
             number="01"
-            title="Recent Entries"
-            description="Chronological log of engineering milestones."
+            title={settings.journal_section_title || 'Recent Entries'}
+            description={settings.journal_section_description || 'Chronological log of engineering milestones.'}
           />
         </div>
         <div className="mx-auto mt-12 max-w-2xl">
@@ -72,7 +72,7 @@ export default async function JournalPage() {
               href="#"
               className="link-underline text-sm font-medium text-primary"
             >
-              View archive
+              {settings.view_archive || 'View archive'}
             </Link>
           </div>
         </div>

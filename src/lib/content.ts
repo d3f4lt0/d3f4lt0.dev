@@ -81,3 +81,39 @@ export function getAboutPage(): Record<string, any> {
   const fileContent = fs.readFileSync(aboutPath, 'utf-8');
   return JSON.parse(fileContent);
 }
+
+export function getDocsPage(): Record<string, any> {
+  const docsPath = path.join(contentDir, 'docs.json');
+  if (!fs.existsSync(docsPath)) {
+    return {};
+  }
+  const fileContent = fs.readFileSync(docsPath, 'utf-8');
+  return JSON.parse(fileContent);
+}
+
+export function getDocsArchitecturePage(): Record<string, any> {
+  const archPath = path.join(contentDir, 'docs', 'architecture.json');
+  if (!fs.existsSync(archPath)) {
+    return {};
+  }
+  const fileContent = fs.readFileSync(archPath, 'utf-8');
+  return JSON.parse(fileContent);
+}
+
+export function getKnowledgePage(): Record<string, any> {
+  const knowledgePath = path.join(contentDir, 'knowledge.json');
+  if (!fs.existsSync(knowledgePath)) {
+    return {};
+  }
+  const fileContent = fs.readFileSync(knowledgePath, 'utf-8');
+  return JSON.parse(fileContent);
+}
+
+export function getNotFoundPage(): Record<string, any> {
+  const notFoundPath = path.join(contentDir, '404.json');
+  if (!fs.existsSync(notFoundPath)) {
+    return {};
+  }
+  const fileContent = fs.readFileSync(notFoundPath, 'utf-8');
+  return JSON.parse(fileContent);
+}

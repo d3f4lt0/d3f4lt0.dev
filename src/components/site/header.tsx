@@ -8,6 +8,15 @@ import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils/cn';
 import { Button } from '@/components/ui/button';
 
+interface HeaderProps {
+  brandName?: string;
+  navProjects?: string;
+  navJournal?: string;
+  navKnowledge?: string;
+  navNow?: string;
+  navAbout?: string;
+}
+
 const navigation = [
   { name: 'Projects', href: '/projects' },
   { name: 'Journal', href: '/journal' },
@@ -16,12 +25,20 @@ const navigation = [
   { name: 'About', href: '/about' },
 ];
 
-export function Header() {
+export function Header({ brandName, navProjects, navJournal, navKnowledge, navNow, navAbout }: HeaderProps) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
+
+  const navItems = [
+    { name: navProjects || 'Projects', href: '/projects' },
+    { name: navJournal || 'Journal', href: '/journal' },
+    { name: navKnowledge || 'Knowledge', href: '/knowledge' },
+    { name: navNow || 'Now', href: '/now' },
+    { name: navAbout || 'About', href: '/about' },
+  ];
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -57,11 +74,11 @@ export function Header() {
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center space-x-2">
             <span className="text-lg font-medium text-foreground">
-              d3f4lt0
+              {brandName || 'd3f4lt0'}
             </span>
           </Link>
           <nav className="hidden sm:flex items-center gap-6" aria-label="Main navigation">
-            {navigation.map((item) => (
+            {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
@@ -126,7 +143,7 @@ export function Header() {
           className="border-t border-border bg-background sm:hidden mobile-menu-enter"
         >
           <nav className="flex flex-col gap-1 px-4 py-3" aria-label="Mobile navigation">
-            {navigation.map((item) => (
+            {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}

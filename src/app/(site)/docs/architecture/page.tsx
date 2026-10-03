@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Section } from '@/components/site/section';
 import { SectionHeader } from '@/components/site/section-header';
 import { PageTitle } from '@/components/site/page-title';
+import { getDocsArchitecturePage } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'Architecture',
@@ -22,13 +23,15 @@ export const metadata: Metadata = {
 };
 
 export default function DocsArchitecturePage() {
+  const architecture = getDocsArchitecturePage();
+
   return (
     <div className="page-fade-in">
       <Section className="pt-16 sm:pt-24 lg:pt-[160px] pb-16 sm:pb-24">
         <div className="mx-auto max-w-2xl">
-          <PageTitle>Architecture</PageTitle>
+          <PageTitle>{architecture.title || 'Architecture'}</PageTitle>
           <p className="mt-4 text-lg leading-7 text-foreground/80 text-balance">
-            System design, data flow, and component interactions.
+            {architecture.description || 'System design, data flow, and component interactions.'}
           </p>
         </div>
       </Section>
@@ -37,22 +40,22 @@ export default function DocsArchitecturePage() {
         <div className="mx-auto max-w-2xl">
           <SectionHeader
             number="01"
-            title="Overview"
+            title={architecture.overview_title || 'Overview'}
           />
           <div className="mt-6 space-y-4 text-base leading-7 text-muted-foreground">
-            <p>
-              Documentation is in progress. This page will contain architecture diagrams, data flow descriptions, and component interaction details.
-            </p>
-            <p>
-              For now, the best source of truth is the project repositories and the journal.
-            </p>
+            {(architecture.overview_paragraphs || [
+              'Documentation is in progress. This page will contain architecture diagrams, data flow descriptions, and component interaction details.',
+              'For now, the best source of truth is the project repositories and the journal.'
+            ]).map((paragraph: string, index: number) => (
+              <p key={index}>{paragraph}</p>
+            ))}
           </div>
           <div className="mt-8">
             <Link
               href="/docs"
               className="link-underline text-sm font-medium text-primary"
             >
-              Back to documentation
+              {architecture.back_to_docs || 'Back to documentation'}
             </Link>
           </div>
         </div>
