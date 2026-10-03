@@ -1,8 +1,7 @@
 ---
-title: "Now"
-updated: "2026-10-02"
+title: Now
+updated: '2026-10-03'
 ---
-
 ## Learning
 
 Learning more about ICT trading strategy while continuing to improve my coding and software engineering skills through practical project work.
