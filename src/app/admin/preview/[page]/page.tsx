@@ -532,6 +532,7 @@ export default function AdminPreviewPage() {
               { key: 'mode_status', label: 'Mode Status', type: 'text' },
               { key: 'mode_body', label: 'Mode Body', type: 'textarea' },
               { key: 'mode_email_label', label: 'Mode Email Label', type: 'text' },
+              { key: 'mode_email_href', label: 'Mode Email Href', type: 'text' },
               { key: 'view_project', label: 'View Project', type: 'text' },
               { key: 'view_all_journal', label: 'View All Journal', type: 'text' },
               { key: 'view_archive', label: 'View Archive', type: 'text' },
@@ -648,6 +649,12 @@ export default function AdminPreviewPage() {
                     }}
                     saving={saving}
                   />
+                  <div className="mt-2 flex items-center gap-3">
+                    <label className="text-xs font-medium text-muted-foreground/60">Email label:</label>
+                    <Editable value={site.mode_email_label || 'email'} onSave={(val) => saveSite({ mode_email_label: val })} as="span" saving={saving} />
+                    <label className="text-xs font-medium text-muted-foreground/60 ml-3">Email href:</label>
+                    <Editable value={site.mode_email_href || 'mailto:d3f4lt0@proton.me'} onSave={(val) => saveSite({ mode_email_href: val })} as="span" saving={saving} />
+                  </div>
                 </div>
               </div>
             </div>

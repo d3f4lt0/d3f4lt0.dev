@@ -116,6 +116,14 @@ export default async function HomePage() {
                 .map((block) => (
                   <BlockRenderer key={block.id} block={block} />
                 ))}
+              {settings.mode_email_label && settings.mode_email_href && (
+                <p className="mt-1 text-sm text-muted-foreground/75">
+                  <a href={settings.mode_email_href} className="link-underline text-foreground/75">
+                    {settings.mode_email_label}
+                  </a>{' '}
+                  is the best way to reach me.
+                </p>
+              )}
             </div>
           </div>
         </div>
