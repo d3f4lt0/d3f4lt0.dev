@@ -105,7 +105,7 @@
     {
       "id": "about-contact-cards",
       "type": "contacts",
-      "content": "[{\"label\":\"GitHub\",\"href\":\"https://github.com/d3f4lt0\",\"external\":true},{\"label\":\"Instagram\",\"href\":\"https://instagram.com/d3f4lt0\",\"external\":true{\"label\":\"Roblox\",\"href\":\"https://www.roblox.com/users/7877046283/profile\",\"external\": true},\n{\"label\":\"osu!\",\"href\":\"https://osu.ppy.sh/users/39891012\",\"external\":true},{\"label\":\"Discord\",\"href\":\"https://discord.com/users/1264846495555784736\",\"external\":true},{\"label\":\"Email\",\"href\":\"mailto:d3f4lt0@proton.me\",\"external\":false}]",
+      "content": "[{\"label\":\"GitHub\",\"href\":\"https://github.com/d3f4lt0\",\"external\":true},{\"label\":\"Instagram\",\"href\":\"https://instagram.com/d3f4lt0\",\"external\":true}{\"label\":\"Roblox\",\"href\":\"https://www.roblox.com/users/7877046283/profile\",\"external\": true}, {\"label\":\"osu!\",\"href\":\"https://osu.ppy.sh/users/39891012\",\"external\":true},{\"label\":\"Discord\",\"href\":\"https://discord.com/users/1264846495555784736\",\"external\":true},{\"label\":\"Email\",\"href\":\"mailto:d3f4lt0@proton.me\",\"external\":false}]",
       "order": 7
     }
   ]
