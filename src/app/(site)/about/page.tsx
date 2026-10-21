@@ -41,24 +41,27 @@ export default function AboutPage() {
           {blocks
             .filter((b) => b.id !== 'about-hero-title' && b.id !== 'about-hero-body')
             .sort((a, b) => a.order - b.order)
-            .reduce<Array<{ block: Block; contact?: boolean }>>((acc, block) => {
+            .reduce<Array<{ key: string; contact: boolean; blocks: Block[] }>>((acc, block) => {
               const isContact = block.id.startsWith('about-contact');
-              if (isContact && acc.length && acc[acc.length - 1].contact) {
-                acc[acc.length - 1].block = block;
+              const last = acc[acc.length - 1];
+              if (isContact && last && last.contact) {
+                last.blocks.push(block);
               } else {
-                acc.push({ block, contact: isContact });
+                acc.push({ key: block.id, contact: isContact, blocks: [block] });
               }
               return acc;
             }, [])
-            .map(({ block, contact }) => (
-              contact ? (
-                <div key={block.id} id="contact">
-                  <BlockRenderer block={block} />
+            .map((group) =>
+              group.contact ? (
+                <div key={group.key} id="contact" className="space-y-6">
+                  {group.blocks.map((block) => (
+                    <BlockRenderer key={block.id} block={block} />
+                  ))}
                 </div>
               ) : (
-                <BlockRenderer key={block.id} block={block} />
+                <BlockRenderer key={group.key} block={group.blocks[0]} />
               )
-            ))}
+            )}
         </div>
       </Section>
     </div>
